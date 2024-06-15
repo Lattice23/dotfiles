@@ -135,3 +135,6 @@ fi
 
 alias neo='neofetch'
 alias cls='clear'
+alias msf='msfconsole'
+alias rock='/usr/share/wordlists/rockyou'
+alias P3='python3'
