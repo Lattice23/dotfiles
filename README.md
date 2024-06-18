@@ -2,11 +2,11 @@
 
 ### Arch:
 
-- Terminal: Kitty
-- Kitty-Theme: Adventure Time
-- Shell: zsh
+- Terminal: **Kitty**
+- Kitty-Theme: **Adventure Time**
+- Shell: **zsh**
 - DE: [Hyprland](https://github.com/JaKooLit/Arch-Hyprland)
-- WM: Sway
+- WM: **Sway**
 
 ![](./screenshot1.png)
 
