@@ -5,8 +5,7 @@
 - Terminal: **Kitty**
 - Kitty-Theme: **Adventure Time**
 - Shell: **zsh**
-- DE: [Hyprland](https://github.com/JaKooLit/Arch-Hyprland)
-- WM: **Sway**
+- WM: [Hyprland](https://github.com/JaKooLit/Arch-Hyprland)
 
 ![](./screenshot1.png)
 
