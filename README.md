@@ -14,4 +14,6 @@
 
 ### PopOS:
 
+- Theme: [Drcaula](https://draculatheme.com/gtk)
+
 ![](./screenshot3.png)
