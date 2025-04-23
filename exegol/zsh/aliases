@@ -1,0 +1,13 @@
+# Config file dedicated to the user's personal aliases shared between all exegol containers
+alias       msf='msfconsole'             \
+            cls='clear'                  \
+            pxc='proxychains'       \
+            nmap2md='/opt/my-resources/bin/nmap2md/nmap2md.py' \
+            ipa='ip --brief -4 a' \
+            tgt='source $(which tgt.sh)' \
+            xcat='bat' \
+            yz='yazi' \
+	          nv='nvim' \
+            xcreds='exegol-history' \
+            tmux='tmux -f /opt/my-resources/setup/tmux/.tmux.conf' \
+            fd='fdfind'

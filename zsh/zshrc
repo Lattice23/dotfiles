@@ -1,0 +1,88 @@
+
+#!/usr/bin/env zsh
+#
+function load_zsh_plugins {
+    # Oh-my-zsh installation path
+    zsh_paths=(
+        "$HOME/.oh-my-zsh"
+        "/usr/local/share/oh-my-zsh"
+        "/usr/share/oh-my-zsh"
+    )
+    for zsh_path in "${zsh_paths[@]}"; do [[ -d $zsh_path ]] && export ZSH=$zsh_path && break; done
+    # Load Plugins
+    hyde_plugins=(git zsh-256color zsh-autosuggestions zsh-syntax-highlighting)
+    plugins+=("${plugins[@]}" "${hyde_plugins[@]}" git zsh-256color zsh-autosuggestions zsh-syntax-highlighting)
+    # Deduplicate plugins
+    plugins=("${plugins[@]}")
+    plugins=($(printf "%s\n" "${plugins[@]}" | sort -u))
+
+    # Loads om-my-zsh
+    [[ -r $ZSH/oh-my-zsh.sh ]] && source $ZSH/oh-my-zsh.sh
+}
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/cuda/bin:/opt/cuda/nsight_compute:/opt/cuda/nsight_systems/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/lattice/.local/bin:/home/lattice/.cargo/bin/
+export XDG_CONFIG_HOME=~/.config/
+
+# Function to handle initialization errors
+function handle_init_error {
+    if [[ $? -ne 0 ]]; then
+        echo "Error during initialization. Please check your configuration."
+    fi
+}
+
+function no_such_file_or_directory_handler {
+    local red='\e[1;31m' reset='\e[0m'
+    printf "${red}zsh: no such file or directory: %s${reset}\n" "$1"
+    return 127
+}
+
+
+if [ -t 1 ]; then
+    # We are loading the prompt on start so users can see the prompt immediately
+    # Powerlevel10k theme path
+    P10k_THEME=${P10k_THEME:-/usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme}
+    [[ -r $P10k_THEME ]] && source $P10k_THEME
+
+    # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh
+    [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+fi
+    # Load plugins
+    load_zsh_plugins
+
+    # Helpful aliases
+    if [[ -x "$(which eza)" ]]; then
+	    alias l='eza -lh --icons=auto' \
+      		  ll='eza -lha --icons=auto --sort=name --group-directories-first' \
+      		  ld='eza -lhD --icons=auto' \
+      		  exegol='sudo -E /home/lattice/.local/bin/exegol' \
+      		  lt='eza --icons=auto --tree' \
+      		  cls='clear' \
+      		  ff='fastfetch' \
+            ipa='ip --brief -4 a' \
+            manual='compgen -c | fzf --border | xargs man' \
+            xcat='bat' \
+            yz='yazi' \
+	          nv='nvim' \
+            wcc='x86_64-w64-mingw32-g++'\
+            colors='for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done'\
+            labs='sudo echo && sudo openvpn ~/vpn/lab.ovpn >/dev/null &' \
+            fastcat='bash /home/lattice/extras/FastCat/fastcat.sh --shell'
+    fi
+
+function fzf-history-widget() {
+    local selected_cmd
+    selected_cmd=$(history -r 1 | awk '{$1=""; print substr($0,2)}' | fzf --height=60% --border) 
+    if [[ -n $selected_cmd ]]; then
+        BUFFER="$selected_cmd"  # Insert the command
+        zle reset-prompt        # Refresh the prompt to show the inserted command
+    fi
+}
+zle -N fzf-history-widget
+bindkey '^R' fzf-history-widget
+
+
+# save old pwd
+trap 'echo "$OLDPWD" > ~/.last_oldpwd' EXIT
+if [[ -f ~/.last_oldpwd ]]; then
+    export OLDPWD="$(cat ~/.last_oldpwd)"
+fi
