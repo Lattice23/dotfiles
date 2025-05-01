@@ -1,12 +1,12 @@
 unbind r
 unbind u
-bind u source-file /opt/my-resources/setup/tmux/tmux.conf
+bind u source-file ~/.tmux.conf
 set -g prefix C-s
 set -g default-terminal "tmux"
 set -s escape-time 0
 
-set-environment -g TMUX_TUN0_IP "#(/opt/my-resources/setup/tmux/tmodules/ctp_tun0.sh)"
-source -F '/opt/my-resources/setup/tmux/tmodules/ctp_tun0.conf'
+set-environment -g TMUX_TUN0_IP "#(~/tmodules/ctp_tun0.sh)"
+source -F '#{d:current_file}/tmodules/ctp_tun0.conf'
 
 # Enable Mouse scrolling
 set -g mouse on
@@ -94,9 +94,10 @@ set -g @rose_pine_date_time ''
 set -g @rose_pine_bar_bg_disable 'on'
 set -g @rose_pine_bar_bg_disabled_color_option 'default'
 set -g @rose_pine_disable_active_window_menu 'on'
-set -g @rose_pine_status_right_append_section  '#[fg=pink] #{@rose_pine_rp_tun0_icon}#{E:TMUX_TUN0_IP}#[fg=blue] | '
-set -ag @rose_pine_status_right_append_section '#[fg=blue] 󰔟 #(date +"%I:%M %p") '
-#set -ag @rose_pine_status_right_append_section '#[fg=gold] ✅ Iono #[default]'
+set -g @rose_pine_status_right_append_section ' #{@rose_pine_rp_tun0_icon}#{E:TMUX_TUN0_IP}'
+set -ag @rose_pine_status_right_append_section ' 󰔟 #(date +"%I:%M %p")'
+set -ag @rose_pine_status_right_append_section ' ✅ WORKING'
+
 
 #--------------------------------------------------------------------------------------
 
@@ -109,4 +110,4 @@ bind -T copy-mode-vi Escape send -X cancel
 #------------------------------------------------------------------------------------
 
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
-run -b '/opt/my-resources/setup/tmux/.tmux/plugins/tpm/tpm'
+run -b '~/.tmux/plugins/tpm/tpm'
