@@ -1,6 +1,12 @@
-
 #!/usr/bin/env zsh
-#
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+
 function load_zsh_plugins {
     # Oh-my-zsh installation path
     zsh_paths=(
@@ -52,6 +58,7 @@ fi
     # Helpful aliases
     if [[ -x "$(which eza)" ]]; then
 	    alias l='eza -lh --icons=auto' \
+	          ls='eza --icons=auto' \
       		  ll='eza -lha --icons=auto --sort=name --group-directories-first' \
       		  ld='eza -lhD --icons=auto' \
       		  exegol='sudo -E /home/lattice/.local/bin/exegol' \
@@ -64,9 +71,13 @@ fi
             yz='yazi' \
 	          nv='nvim' \
             wcc='x86_64-w64-mingw32-g++'\
+            mal='cd /home/lattice/code/maldev/' \
             colors='for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done'\
-            labs='sudo echo && sudo openvpn ~/vpn/lab.ovpn >/dev/null &' \
-            fastcat='bash /home/lattice/extras/FastCat/fastcat.sh --shell'
+            labs='sudo echo && sudo openvpn ~/vpn/lab_TLattice.ovpn >/dev/null &' \
+            fastcat='bash /home/lattice/extras/FastCat/fastcat.sh --shell' \
+            icat='kitten icat' \
+            beats='~/extras/Rofi-Beats/RofiBeats.sh' \
+            tx='tmux'
     fi
 
 function fzf-history-widget() {
@@ -86,3 +97,15 @@ trap 'echo "$OLDPWD" > ~/.last_oldpwd' EXIT
 if [[ -f ~/.last_oldpwd ]]; then
     export OLDPWD="$(cat ~/.last_oldpwd)"
 fi
+
+
+# Yazi stuff
+  function y() {
+  	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+  	yazi "$@" --cwd-file="$tmp"
+  	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+  		builtin cd -- "$cwd"
+  	fi
+  	rm -f -- "$tmp"
+  }
+

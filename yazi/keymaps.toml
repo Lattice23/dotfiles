@@ -4,7 +4,7 @@
 
 [manager]
 
-keymap = [
+prepend_keymap = [
 	{ on = "<Esc>", run = "escape",             desc = "Exit visual mode, clear selection, or cancel search" },
 	{ on = "<C-[>", run = "escape",             desc = "Exit visual mode, clear selection, or cancel search" },
 	{ on = "q",     run = "quit",               desc = "Quit the process" },
@@ -155,6 +155,10 @@ keymap = [
 	# Help
 	{ on = "~",    run = "help", desc = "Open help" },
 	{ on = "<F1>", run = "help", desc = "Open help" },
+  
+  # Fullscreen
+  { on = "T", run = "plugin toggle-pane max-current", desc = "Maximize or restore the current pane" },
+  { on = "M", run = "plugin toggle-pane max-preview", desc = "Maximize or restore the preview pane" },
 ]
 
 [tasks]
