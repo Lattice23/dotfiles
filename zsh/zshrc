@@ -109,3 +109,4 @@ fi
   	rm -f -- "$tmp"
   }
 
+#ff -c /usr/share/fastfetch/presets/neofetch.jsonc
