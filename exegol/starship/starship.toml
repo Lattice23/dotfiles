@@ -1,0 +1,31 @@
+# Get editor completions based on the config schema
+#"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """$directory${custom.DOMAIN_USER}
+${custom.HOST}$character
+"""
+
+
+# Inserts a blank line between shell prompts
+add_newline = true
+
+[custom.HOST]
+disabled = false
+when = "test -n $HOSTNAME"
+command = 'hostname'
+format = "[ $output](bold red) "
+
+[custom.DOMAIN_USER]
+disabled = false
+when = "test $DOMAIN != '' -a $USER != ''"
+command = 'echo $USER@$DOMAIN'
+format = "\\[[$output](bold green)\\] "
+
+# Replace the '❯' symbol in the prompt with '➜'
+[character]
+success_symbol = '[➜](bold red)'
+error_symbol = "[❯](bold red)"
+
+# Disable the package module, hiding it from the prompt completely
+[package]
+disabled = true
