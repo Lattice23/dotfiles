@@ -1,6 +1,6 @@
 # Config file dedicated to the user's personal aliases shared between all exegol containers
 alias       l='eza -lh --icons=auto' \
-	          ls='eza --icons=auto' \
+	    ls='eza --icons=auto' \
             ll='eza -lha --icons=auto --sort=name --group-directories-first' \
             ld='eza -lhD --icons=auto' \
             lt='eza --icons=auto --tree' \
@@ -12,8 +12,8 @@ alias       l='eza -lh --icons=auto' \
             tgt='source $(which tgt.sh)' \
             xcat='bat' \
             yz='yazi' \
-	          nv='nvim' \
-            xcreds='/opt/tools/Exegol-history/venv/bin/python3 /opt/my-resources/bin/Exegol-history/exegol-history.py' \
+	    nv='nvim' \
+            xcreds='exegol-history' \
             tmux='tmux -f /opt/my-resources/setup/tmux/.tmux.conf' \
             fd='fdfind'\
             tx='tmux'\
