@@ -13,8 +13,10 @@ alias       l='eza -lh --icons=auto' \
             xcat='bat' \
             yz='yazi' \
 	          nv='nvim' \
-            xcreds='exegol-history' \
+            xcreds='/opt/tools/Exegol-history/venv/bin/python3 /opt/my-resources/bin/Exegol-history/exegol-history.py' \
             tmux='tmux -f /opt/my-resources/setup/tmux/.tmux.conf' \
             fd='fdfind'\
             tx='tmux'\
+            cheats='cd /root/.local/share/pipx/venvs/arsenal-cli/lib/python3.11/site-packages/arsenal/data/cheats/' \
+            zel='zellij'
             #'cd'='z'

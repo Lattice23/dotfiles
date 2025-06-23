@@ -16,4 +16,9 @@
 
   #add-zsh-hook precmd update_prompt
 
-  eval "$(starship init zsh)"
+bindkey "^b" backward-word
+bindkey "^f" forward-word
+bindkey "^x" delete-char
+bindkey "^d" delete-word
+
+eval "$(starship init zsh)"

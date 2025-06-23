@@ -28,6 +28,15 @@ install_starship() {
   echo "starship and eza installed"
 }
 
+install_zellij() {
+  echo "installing zellij"
+  cargo install zellij
+
+  rm -rf ~/.config/zellij/
+  cp /opt/my-resources/setup/zellij/ ~/.config/ -r
+  echo "installed zellij"
+}
+
 install_nu() {
   echo "Installing nushell"
 
@@ -42,9 +51,15 @@ install_nu() {
 
 install_yazi
 sleep 2
+
 install_starship
 sleep 2
+
+install_zellij
+sleep 2
+
 install_nu
+sleep 2
 
 zsh
 echo -e "\n DONE :)\n"

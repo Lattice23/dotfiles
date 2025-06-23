@@ -1,0 +1,113 @@
+unbind r
+unbind u
+bind u source-file ~/.tmux.conf
+set -g prefix C-s
+set -g default-terminal "tmux"
+set -s escape-time 0
+
+set-environment -g TMUX_TUN0_IP "#(~/tmodules/ctp_tun0.sh)"
+source -F '#{d:current_file}/tmodules/ctp_tun0.conf'
+
+# Enable Mouse scrolling
+set -g mouse on
+
+#---------------------------------[ WINDOWS ]----------------------------------------
+# Window Stuff
+bind v split-window -h
+bind g split-window -v
+bind n new-window
+
+# Move in panes
+bind j select-pane  -D
+bind k select-pane  -U
+bind h select-pane  -L
+bind l select-pane  -R
+
+# Rename Window
+bind-key r command-prompt -I "#W" "rename-window '%%'"
+
+#------------------------------------------------------------------------------------
+
+#---------------------------[ PLUGINS ]--------------------------
+
+# Tools
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-yank'
+
+# Themes
+set -g @plugin 'rose-pine/tmux'
+set -g @plugin 'catppuccin/tmux'
+set -g @plugin 'dracula/tmux'
+set -g @plugin 'joshmedeski/tmux-nerd-font-window-name'
+
+#---------------------------------------------------------------
+
+# ----------[ Dracula Theme ]----------
+
+  #set -g @dracula-plugins "time  ram-usage cwd cpu-usage powerline"
+  #set -g @dracula-show-powerline true set -g @dracula-ram-usage-label " ram"
+  ##set -g @dracula-fixed-location "iono"
+  #set -g @dracula-time-format "%I:%M"
+
+# ----------[ Catppuccin Theme ]----------
+
+#set -g @catppuccin_flavor 'mocha' # latte, frappe, macchiato or mocha
+#set -g @catppuccin_window_status_style "rounded"
+#set -g status-left ""
+#
+### Window configuration
+#set -g @catppuccin_window_status 'no'
+#set -g @catppuccin_window_current_text " #{window_name}"
+#set -g @catppuccin_window_current_fill "all"
+
+
+### Status
+#set -g   status-right-length 100
+#set -g   status-right        "#{E:@catppuccin_status_ctp_tun0}"
+#set -ag  status-right        "#{E:@catppuccin_status_application}"
+#set -ag  status-right        "#{E:@catppuccin_status_session}"
+#set -ag  status-right        "#{E:@catppuccin_status_uptime}"
+
+#--------------------------------------------------------------------------------------
+
+# ----------[ Rose Pine Theme ]----------
+
+set -g @rose_pine_variant 'moon'  # Optional: main, moon, or dawn
+
+set -g @rose_pine_left_separator ' > ' # The strings to use as separators are 1-space padded
+set -g @rose_pine_right_separator ' < ' # Accepts both normal chars & nerdfont icons
+set -g @rose_pine_field_separator ' | ' # Again, 1-space padding, it updates with prefix + I
+set -g @rose_pine_window_separator ' - ' # Replaces the default `:` between the window number and name
+
+set -g @rose_pine_session_icon '' # Changes the default icon to the left of the session name
+set -g @rose_pine_current_window_icon '' # Changes the default icon to the left of the active window name
+set -g @rose_pine_folder_icon '' # Changes the default icon to the left of the current directory folder
+set -g @rose_pine_username_icon '' # Changes the default icon to the right of the hostname
+set -g @rose_pine_hostname_icon '󰒋' # Changes the default icon to the right of the hostname
+set -g @rose_pine_date_time_icon '󰃰' # Changes the default icon to the right of the date module
+set -g @rose_pine_window_status_separator "  " # Changes the default icon that appears between window names
+
+set -g @rose_pine_host 'off'
+set -g @rose_pine_user 'off'
+set -g @rose_pine_directory 'off'
+set -g @rose_pine_date_time ''
+set -g @rose_pine_bar_bg_disable 'on'
+set -g @rose_pine_bar_bg_disabled_color_option 'default'
+set -g @rose_pine_disable_active_window_menu 'on'
+set -g @rose_pine_status_right_append_section ' #{@rose_pine_rp_tun0_icon}#{E:TMUX_TUN0_IP}'
+set -ag @rose_pine_status_right_append_section ' 󰔟 #(date +"%I:%M %p")'
+set -ag @rose_pine_status_right_append_section ' ✅ WORKING'
+
+
+#--------------------------------------------------------------------------------------
+
+
+#----------------------------------[ COPY MODE ]-------------------------------------
+bind c copy-mode
+setw -g mode-keys vi
+bind -T copy-mode-vi C-v send -X rectangle-toggle
+bind -T copy-mode-vi Escape send -X cancel
+#------------------------------------------------------------------------------------
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run -b '~/.tmux/plugins/tpm/tpm'

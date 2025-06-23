@@ -86,4 +86,8 @@ source "$GOPATH"/pkg/mod/github.com/tomnomnom/gf@*/gf-completion.zsh
 # genusernames function
 source /opt/tools/genusernames/genusernames.function
 
+exegol-history () {
+    /opt/my-resources/bin/Exegol-history/venv/bin/python3 /opt/my-resources/bin/Exegol-history/exegol-history.py "$@" && source /opt/my-resources/bin/Exegol-history/profile.sh
+}
+
 eval "$(starship init zsh)"
