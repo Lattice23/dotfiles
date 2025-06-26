@@ -1,0 +1,3 @@
+return {
+  'zane-/cder.nvim'
+}

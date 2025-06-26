@@ -16,6 +16,15 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
 })
 
+function Transparent(color)
+  color = color or "eldritch"
+  vim.cmd.colorscheme(color)
+  vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+  vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+end
+
+Transparent()
+
 -- diagnostics
 vim.diagnostic.config({
   signs = {

@@ -54,6 +54,16 @@ keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy fin
 keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
 keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
 
+-- obsidian
+keymap.set("n", "<leader>on", "<cmd>ObsidianQuickSwitch<CR>", { desc = "Edit note from obsidian vault" })
+keymap.set("n", "<leader>oo", "<cmd>ObsidianOpen<CR>", { desc = "Open obsidian application" })
+keymap.set("n", "<leader>ot", "<cmd>ObsidianTags<CR>", { desc = "View obsidian tags" })
+keymap.set("n", "<leader>ol", "<cmd>ObsidianLinks<CR>", { desc = "View current buffer obsidian links" })
+keymap.set("n", "<leader>oT", "<cmd>ObsidianNewFromTemplate<CR>", { desc = "Create new note from template" })
+keymap.set("n", "<leader>oc", "<cmd>ObsidianTOC<CR>", { desc = "Display Table of Contents" })
+
+
+
 -- terminal
 keymap.set("n", "<C-_>", function()
   vim.cmd("botright split | terminal")

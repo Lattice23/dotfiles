@@ -12,9 +12,32 @@ return {
     lazy = false, -- As https://github.com/nvimdev/dashboard-nvim/pull/450, dashboard-nvim shouldn't be lazy-loaded to properly handle stdin.
     opts = function()
       local ascii = require("ascii")
-      local logo = table.concat(ascii.art.anime.onepiece.nami, "\n")
+      local logo = table.concat(ascii.art.misc.skulls.threeskulls_big_v1, "\n")
 
       logo = string.rep("\n", 8) .. logo .. "\n\n"
+
+      local function find_file_and_cd()
+        local vault_path = vim.fn.expand("~/Vault/Vault")
+        require("telescope.builtin").find_files({
+          cwd = vault_path,
+          attach_mappings = function(prompt_bufnr, map)
+            local actions = require("telescope.actions")
+            local action_state = require("telescope.actions.state")
+            local open_and_cd = function()
+              local entry = action_state.get_selected_entry()
+              actions.close(prompt_bufnr)
+              -- Open the file
+              vim.cmd("edit " .. vim.fn.fnameescape(entry.path))
+              -- Change directory to the file's directory
+              local dir = vim.fn.fnamemodify(entry.path, ":h")
+              vim.cmd("cd " .. vim.fn.fnameescape(dir))
+            end
+            map("i", "<CR>", open_and_cd)
+            map("n", "<CR>", open_and_cd)
+            return true
+          end,
+        })
+      end
 
       local opts = {
         theme = "doom",
@@ -25,17 +48,17 @@ return {
         },
         config = {
           header = vim.split(logo, "\n"),
-        -- stylua: ignore
-        center = {
-           { action = "Telescope find_files",              desc = " Find File",         icon = " ",  key = "f" },
-           { action = "ene | startinsert",                 desc = " New File",          icon = " ",  key = "n" },
-           { action = "Telescope oldfiles",                desc = " Recent Files",      icon = " ",  key = "r" },
-           { action = "Telescope live_grep",               desc = " Find Text",         icon = " ",  key = "g" },
-           { action = "edit $MYVIMRC",                     desc = " Config",            icon = " ",  key = "c" },
-           { action = 'lua require("persistence").load()', desc = " Restore Session",   icon = " ",  key = "s" },
-           { action = "LazyExtras",                        desc = " Lazy Extras",       icon = " ",  key = "x" },
-           { action = "Lazy",                              desc = " Lazy",              icon = "󰒲 ",  key = "l" },
-           { action = function() vim.api.nvim_input("<cmd>qa<cr>") end, desc = " Quit", icon = " ",  key = "q" },
+          -- stylua: ignore
+          center = {
+            { action = "Telescope find_files", desc = " Find File", icon = " ", key = "f" },
+            { action = "ene | startinsert", desc = " New File", icon = " ", key = "n" },
+            { action = "Telescope oldfiles", desc = " Recent Files", icon = " ", key = "r" },
+            { action = find_file_and_cd, desc = "Obsidian Vault", icon = "󱟻  ", key = "v" },
+            { action = "Telescope live_grep", desc = " Find Text", icon = " ", key = "g" },
+            { action = "edit $MYVIMRC", desc = " Config", icon = " ", key = "c" },
+            { action = 'lua require("persistence").load()', desc = " Restore Session", icon = " ", key = "s" },
+            { action = "Lazy", desc = " Lazy", icon = "󰒲 ", key = "l" },
+            { action = function() vim.api.nvim_input("<cmd>qa<cr>") end, desc = " Quit", icon = " ", key = "q" },
           },
           footer = function()
             local stats = require("lazy").stats()

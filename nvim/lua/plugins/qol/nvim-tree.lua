@@ -44,5 +44,6 @@ return {
         ignore = false,
       },
     })
-  end
+    require("transparent").clear_prefix("NvimTree")
+  end,
 }
