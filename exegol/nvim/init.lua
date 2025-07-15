@@ -1,19 +1,40 @@
--- bootstrap lazy.nvim, LazyVim and your plugins
-require("config.lazy")
+require("core")
+require("boot-lazy")
 
--- In your init.lua or init.vim
-vim.opt.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50"
+-- markdown
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    vim.opt_local.conceallevel = 2
+  end,
+})
 
--- Ensure cursor is restored on exit
-vim.api.nvim_create_autocmd("VimLeave", {
-  pattern = "*",
-  command = "set guicursor=a:ver25",
+-- highlight yanked text
+vim.api.nvim_create_autocmd("TextYankPost", {
+  callback = function()
+    vim.highlight.on_yank()
+  end,
 })
 
 -- function Transparent(color)
---   color = color or "tokyonight-storm"
+--   color = color or "eldritch"
 --   vim.cmd.colorscheme(color)
 --   vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 --   vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 -- end
+--
 -- Transparent()
+
+-- vim.api.nvim_command("set formatoptions+=a") -- auto paragraph formatting
+
+-- diagnostics
+vim.diagnostic.config({
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = " ",
+      [vim.diagnostic.severity.WARN]  = " ",
+      [vim.diagnostic.severity.HINT]  = "󰠠 ",
+      [vim.diagnostic.severity.INFO]  = " ",
+    },
+  },
+})

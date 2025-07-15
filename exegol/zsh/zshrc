@@ -16,6 +16,15 @@
 
   #add-zsh-hook precmd update_prompt
 
+function exegol-history {
+/opt/my-resources/bin/Exegol-history/venv/bin/python3 /opt/my-resources/bin/Exegol-history/exegol-history.py "$@" && source /opt/my-resources/bin/Exegol-history/profile.sh
+}
+  
+  
+function ke() {
+  export KRB5CCNAME="$1"
+}
+
 bindkey "^b" backward-word
 bindkey "^f" forward-word
 bindkey "^x" delete-char

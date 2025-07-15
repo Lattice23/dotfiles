@@ -1,0 +1,15 @@
+return {
+  "kak.nvim",
+  url = "https://github.com/Lattice23/kak.nvim.git",
+  --version = "^7", -- if you don't want breaking changes
+  event = "VeryLazy",              -- load after other plugins, to avoid conflicts
+  opts = {
+    full = false,                  -- if set to false, it disables all keybinds except Normal mode c, d, x, y
+    which_key_integration = false, -- which-key text objects integration
+
+    experimental = {               -- experimental features
+      rebind_visual_aiAI = true,   -- if set to true, rebinds Visual mode `[aiAI]` keybinds to act like they do in Normal mode,
+    }
+    -- your configuratie
+  },
+}

@@ -98,6 +98,12 @@ keybinds clear-defaults=true {
         bind "Alt k" { MoveFocus "up"; SwitchToMode "normal"; }
         bind "Alt l" { MoveFocusOrTab "right"; SwitchToMode "normal"; }
         bind "s" { SwitchToMode "entersearch"; SearchInput 0; }
+        bind "m" {
+    LaunchOrFocusPlugin "file:~/.config/zellij/plugins/monocle.wasm" {
+        floating true
+    };
+    SwitchToMode "Normal"
+}
     }
     search {
         bind "c" { SearchToggleOption "CaseSensitivity"; }
@@ -148,7 +154,7 @@ keybinds clear-defaults=true {
         bind "Alt k" { MoveFocus "up"; }
         bind "Alt l" { MoveFocusOrTab "right"; }
     }
-    shared_except "locked" {
+    shared_except {
         bind "Alt +" { Resize "Increase"; }
         bind "Alt -" { Resize "Decrease"; }
         bind "Alt =" { Resize "Increase"; }
@@ -272,6 +278,7 @@ plugins {
 // eg. "file:/path/to/my-plugin.wasm"
 // eg. "https://example.com/my-plugin.wasm"
 load_plugins {
+  "file:/home/lattice/.config/zellij/plugins/theme-tester.wasm"
 }
  
 // Use a simplified UI without special fonts (arrow glyphs)
@@ -284,7 +291,7 @@ simplified_ui false
 // Choose the theme that is specified in the themes section.
 // Default: default
 // 
-theme "catppuccin-macchiato"
+theme "blade-runner"
  
 // Choose the base input mode of zellij.
 // Default: normal
@@ -385,7 +392,7 @@ copy_on_select true
  
 // Path to the default editor to use to edit pane scrollbuffer
 // Default: $EDITOR or $VISUAL
-// scrollback_editor "/usr/bin/vim"
+scrollback_editor "/usr/bin/nvim"
  
 // A fixed name to always give the Zellij session.
 // Consider also setting `attach_to_session true,`
@@ -452,7 +459,7 @@ scrollback_editor "/usr/bin/nvim";
 // (Requires restart)
 // Default: true (if the host terminal supports it)
 // 
-// support_kitty_keyboard_protocol false
+support_kitty_keyboard_protocol false
  
 // Whether to stack panes when resizing beyond a certain size
 // Default: true

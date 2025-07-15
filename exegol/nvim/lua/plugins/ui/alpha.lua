@@ -52,7 +52,7 @@ return {
 
           -- stylua: ignore
           center = {
-            { action = function() find_file_and_cd(".") end, desc = " Find File", icon = " ", key = "f" },
+            { action = function() find_file_and_cd("~") end, desc = " Find File", icon = " ", key = "f" },
             { action = "ene | startinsert", desc = " New File", icon = " ", key = "n" },
             { action = "Telescope oldfiles", desc = " Recent Files", icon = " ", key = "r" },
             { action = function() find_file_and_cd("~/Vault/Vault/") end, desc = "Obsidian Vault", icon = "󱟻  ", key = "v" },
