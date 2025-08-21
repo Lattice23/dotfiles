@@ -153,7 +153,7 @@ nxc <protocol> <dc-fqdn> --use-kcache
 ## netexec - guest login
 #plateform/linux #target/remote #cat/RECON
 ```
-nxc smb <target-ip> -u "" -p ""
+nxc smb <target-ip> -u "guest" -p ""
 ```
 
 ## evil-winrm - kerberos auth

@@ -73,7 +73,6 @@ export TERM=xterm-256color
 
 
 unalias z
-unalias exh
 # At the end, loads user-defined zshrc post-routines if the file exists otherwise creates a default file if my-resources is enabled in the container
 if [ -f /opt/my-resources/setup/zsh/zshrc ]
 then
