@@ -4,9 +4,6 @@ set -e
 # This script will be executed on the first startup of each new container with the "my-resources" feature enabled.
 # Arbitrary code can be added in this file, in order to customize Exegol (dependency installation, configuration file copy, etc).
 # It is strongly advised **not** to overwrite the configuration files provided by exegol (e.g. /root/.zshrc, /opt/.exegol_aliases, ...), official updates will not be applied otherwise.
-#
-# --- INSTALL YAZI ----
-#
 
 force="$1"
 
@@ -110,6 +107,24 @@ extras() {
   uv tool install "git+https://github.com/Pennyw0rth/NetExec" --force
 }
 
+install_fd_rg() {
+  local fd_bin="/opt/my-resources/bin/fd"
+  local rg_bin="/opt/my-resources/bin/rg"
+
+  if [[ ! -f "$fd_bin" || ! -f "$rg_bin" || "$force" == "force" ]]; then
+    echo "Installing fd and rg"
+    curl -Ls https://github.com/sharkdp/fd/releases/download/v10.2.0/fd-v10.2.0-x86_64-unknown-linux-musl.tar.gz | tar xz
+    mv fd-v10.2.0-x86_64-unknown-linux-musl/fd "$fd_bin"
+    rm -rf fd-v10.2.0-x86_64-unknown-linux-musl
+
+    curl -Ls https://github.com/BurntSushi/ripgrep/releases/download/14.1.1/ripgrep-14.1.1-x86_64-unknown-linux-musl.tar.gz | tar xz
+    mv ripgrep-14.1.1-x86_64-unknown-linux-musl/rg "$rg_bin"
+    rm -rf ripgrep-14.1.1-x86_64-unknown-linux-musl
+  else
+    echo "fd and rg already installed"
+  fi
+}
+
 install_yazi
 
 install_starship
@@ -123,7 +138,6 @@ install_nu
 extras
 
 echo -e "\n DONE :)\n"
-exec zsh
 
 # ---- LOAD TMUX CONF ----
 
