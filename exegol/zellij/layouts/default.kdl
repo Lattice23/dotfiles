@@ -47,7 +47,7 @@ layout {
                 command_tun0ip_interval "5"
                 command_tun0ip_rendermode "static"
 
-                command_target_command  "cat /tmp/target_value.tmp"
+                command_target_command  "/opt/my-resources/bin/target.sh"
                 command_target_format   "#[fg=red, bg=black]   {stdout}"
                 command_target_interval "5"
                 command_target_rendermode "static"

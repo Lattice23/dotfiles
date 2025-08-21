@@ -167,10 +167,10 @@ keybinds clear-defaults=true {
     shared_except "locked" "session" {
         bind "Ctrl o" { SwitchToMode "session"; }
     }
-    shared_except "locked" "scroll" "search" "tmux" {
-        bind "Ctrl b" { SwitchToMode "tmux"; }
-    }
-    shared_except "locked" "scroll" "search" {
+    //shared_except "locked" "scroll" "search" "tmux" {
+    //    bind "Ctrl b" { SwitchToMode "tmux"; }
+    //}
+    shared_except "scroll" "search" {
         bind "Ctrl s" { SwitchToMode "scroll"; }
     }
     shared_except "locked" "tab" {
@@ -428,7 +428,7 @@ copy_on_select true
 // scrollback_lines_to_serialize 10000
  
 // Editor to chose while in scroll mode
-scrollback_editor "/usr/bin/nvim";
+scrollback_editor "/opt/tools/bin/nvim";
 
 // Enable or disable the rendering of styled and colored underlines (undercurl).
 // May need to be disabled for certain unsupported terminals

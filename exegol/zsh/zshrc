@@ -1,33 +1,67 @@
-  #TIME_="%{$fg[white]%}[%{$fg[red]%}%D{%b %d, %Y - %T (%Z)}%{$fg[white]%}]%{$reset_color%}"
-
-  #update_prompt() {
-  #  DB_PROMPT=""
-
-  #  if [[ ! -z "${USER}" ]]; then
-  #    DB_PROMPT="%{$fg[white]%}[%{$fg[yellow]%}${USER}%{$fg[white]%}]%{$reset_color%}"
-  #  fi
-
-  #  if [[ ! -z "${DOMAIN}" && ! -z "${USER}" ]]; then
-  #    DB_PROMPT="%{$fg[white]%}[%{$fg[yellow]%}${USER}@${DOMAIN}%{$fg[white]%}]%{$reset_color%}"
-  #  fi
-
-  #  PROMPT="$LOGGING$DB_PROMPT%{$FX[bold]$FG[013]%}exegol %{$fg_bold[blue]%}%(!.%1~.%c) $(prompt_char)%{$reset_color%} "
-  #}
-
-  #add-zsh-hook precmd update_prompt
-
-function exegol-history {
-/opt/my-resources/bin/Exegol-history/venv/bin/python3 /opt/my-resources/bin/Exegol-history/exegol-history.py "$@" && source /opt/my-resources/bin/Exegol-history/profile.sh
-}
+#  function exegol-history {
+#/opt/my-resources/bin/Exegol-history/venv/bin/python3 /opt/my-resources/bin/Exegol-history/exegol-history.py "$@" && source /opt/my-resources/bin/Exegol-history/profile.sh
+#}
   
   
-function ke() {
-  export KRB5CCNAME="$1"
+function ke  {
+  ticket=$( find . -type f -regextype posix-extended -regex '.*\.(ccache|kirbi|ticket)$' -printf "%f\n" | fzf --query="$1" --height 10% --border=sharp )
+  export KRB5CCNAME="$ticket"
 }
 
+function cmk {
+  mkdir -p "$1" && cd "$1"
+}
+
+function base2kirbi {
+  tmpfile=$(mktemp)
+  decodedTicket=$(mktemp)
+  $EDITOR "$tmpfile"
+  base64 -d "$tmpfile" > "$decodedTicket"
+
+  ticketConverter.py "$decodedTicket" ticket.kirbi
+
+  describeTicket.py ticket.kirbi
+}
+
+function rmtickets {
+    find . -type f -regextype posix-extended -regex '.*\.(ccache|kirbi|ticket)$' -delete
+}
+
+function ntlm_hash { 
+  iconv -f ASCII -t UTF-16LE <(printf "$1") | openssl dgst -md4 | awk '{print $2}'
+}
+
+function ac {
+  if [[ -z $DOMAIN ]]; then
+    exh add creds -u "$1" -p "$2" -H `ntlm_hash "$2"` -d "$3"
+  else
+    exh add creds -u "$1" -p "$2" -H `ntlm_hash "$2"` -d "$DOMAIN"
+  fi
+}
+
+function apply_creds {
+  BUFFER="exh apply creds"
+  zle accept-line
+}
+
+function apply_hosts {
+  BUFFER="exh apply hosts"
+  zle accept-line
+}
+
+zle -N apply_creds apply_creds
+zle -N apply_hosts apply_hosts
+
+
+bindkey -r "^h"
+bindkey "^h" apply_hosts
+bindkey "^n" apply_creds
 bindkey "^b" backward-word
 bindkey "^f" forward-word
 bindkey "^x" delete-char
 bindkey "^d" delete-word
 
+
+export EDITOR=$(which nvim)
 eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"

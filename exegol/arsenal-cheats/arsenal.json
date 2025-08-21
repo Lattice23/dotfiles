@@ -1,0 +1,12 @@
+{
+  "target-ip": "$TARGET",
+  "dc-fqdn": "$DB_HOSTNAME",
+  "domain": "$DOMAIN",
+  "user": "$USER",
+  "password": "$PASSWORD",
+  "hash":"$NT_HASH",
+  "nt-hash":"$NT_HASH",
+  "ip":"$TARGET",
+  "dc-ip":"$TARGET"
+}
+

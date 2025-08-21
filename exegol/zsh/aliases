@@ -1,23 +1,25 @@
 # Config file dedicated to the user's personal aliases shared between all exegol containers
-alias       l='eza -lh --icons=auto' \
-	          ls='eza --icons=auto' \
-            ll='eza -lha --icons=auto --sort=name --group-directories-first' \
-            ld='eza -lhD --icons=auto' \
-            lt='eza --icons=auto --tree' \
-            msf='msfconsole'             \
-            cls='clear'                  \
-            pxc='proxychains'       \
-            nmap2md='/opt/my-resources/bin/nmap2md/nmap2md.py' \
-            ipa='ip --brief -4 a' \
-            tgt='source $(which tgt.sh)' \
-            xcat='bat' \
-            yz='yazi' \
-	          nv='nvim' \
-            xcreds='exegol-history'
-            tmux='tmux -f /opt/my-resources/setup/tmux/.tmux.conf' \
-            fd='fdfind'\
-            tx='tmux'\
-            cheats='cd /root/.local/share/pipx/venvs/arsenal-cli/lib/python3.11/site-packages/arsenal/data/cheats/' \
-            kl='klist' \
-            zel='zellij'
-            #'cd'='z'
+alias l='eza -lh --icons=auto' \
+      ls='eza --icons=auto' \
+      ll='eza -lha --icons=auto --sort=name --group-directories-first' \
+      lt='eza --icons=auto --tree' \
+      msf='msfconsole' \
+      cls='clear' \
+      pxc='proxychains' \
+      nmap2md='/opt/my-resources/bin/nmap2md/nmap2md.py' \
+      ipa='ip --brief -4 a' \
+      tgt='source $(which tgt.sh)' \
+      yz='yazi' \
+      nv='nvim' \
+      tmux='tmux -f /opt/my-resources/setup/tmux/.tmux.conf' \
+      fd='fdfind' \
+      tx='tmux' \
+      cheats='cd /root/.local/share/pipx/venvs/arsenal-cli/lib/python3.11/site-packages/arsenal/data/cheats/' \
+      kl='klist' \
+      zel='zellij' \
+      btk="base2kirbi"\
+      xac="exh apply creds" \
+      xah="exh apply hosts" \
+      zrf='zellij run --floating --'
+      #'cd'='z'
+
