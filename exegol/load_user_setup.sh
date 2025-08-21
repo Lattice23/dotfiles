@@ -84,8 +84,10 @@ extras() {
   cp /opt/my-resources/setup/arsenal-cheats/personal.md /root/.local/share/pipx/venvs/arsenal-cli/lib/python3.11/site-packages/arsenal/data/cheats/Active_directory
   cp /opt/my-resources/setup/arsenal-cheats/arsenal.json ~/.arsenal.json
 
-  pipx install "git+https://github.com/aniqfakhrul/powerview.py"
-  pipx install "git+https://github.com/Pennyw0rth/NetExec"
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+
+  uv tool install "git+https://github.com/aniqfakhrul/powerview.py"
+  uv tool install "git+https://github.com/Pennyw0rth/NetExec"
 }
 
 install_yazi
