@@ -79,11 +79,13 @@ install_nu() {
   echo "Nushell installed"
 }
 
-move_arsenal() {
-  
+extras() {
+  # move arsenal 
   cp /opt/my-resources/setup/arsenal-cheats/personal.md /root/.local/share/pipx/venvs/arsenal-cli/lib/python3.11/site-packages/arsenal/data/cheats/Active_directory
-
   cp /opt/my-resources/setup/arsenal-cheats/arsenal.json ~/.arsenal.json
+
+  pipx install "git+https://github.com/aniqfakhrul/powerview.py"
+  pipx install "git+https://github.com/Pennyw0rth/NetExec"
 }
 
 install_yazi
@@ -101,7 +103,7 @@ sleep 2
 install_nu
 sleep 2
 
-move_arsenal
+extras
 
 echo -e "\n DONE :)\n"
 exec zsh
