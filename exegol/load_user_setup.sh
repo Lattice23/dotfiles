@@ -137,6 +137,8 @@ install_nu
 
 extras
 
+install_fd_rg
+
 echo -e "\n DONE :)\n"
 
 # ---- LOAD TMUX CONF ----
