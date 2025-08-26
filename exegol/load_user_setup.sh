@@ -262,6 +262,8 @@ install_extras() {
     else
         log_warning "Exegol-history not found in uv tools, skipping setup"
     fi
+
+    apt update && apt install pylint &>/dev/null
 }
 
 # Main execution

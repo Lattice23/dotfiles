@@ -275,6 +275,12 @@ exh add creds --ip <target-ip> -u <user> -H $(ntlm_hash <password>) -p <password
 exh import creds -f <kdbx-file> --format KDBX --kdbx-password <kdbx-password>
 ```
 
+## rid users awk - get domains users from rid brute
+#plateform/linux #target/remote #cat/RECON
+```
+awk -F\\ '/SidTypeUser/ {print $2}' | cut -d '(' -f1
+```
+
 ## certipy - find vulnerable
 #plateform/linux #target/remote #cat/ATTACK
 ```

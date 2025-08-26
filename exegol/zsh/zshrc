@@ -27,6 +27,15 @@ function rmtickets {
     find . -type f -regextype posix-extended -regex '.*\.(ccache|kirbi|ticket)$' -delete
 }
 
+
+function clean {
+  local profile="/opt/tools/Exegol-history/profile.sh"
+
+  sed -i "s/'.*/''/" "$profile"
+  unset $(awk '/=''/ {printf "%s ",$2}' "$profile" | tr -d "=''")
+  echo "[+] Vars cleaned"
+}
+
 function ntlm_hash { 
   iconv -f ASCII -t UTF-16LE <(printf "$1") | openssl dgst -md4 | awk '{print $2}'
 }
