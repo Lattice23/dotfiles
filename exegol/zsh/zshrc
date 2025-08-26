@@ -1,10 +1,10 @@
-#  function exegol-history {
-#/opt/my-resources/bin/Exegol-history/venv/bin/python3 /opt/my-resources/bin/Exegol-history/exegol-history.py "$@" && source /opt/my-resources/bin/Exegol-history/profile.sh
-#}
   
-  
+exegol-history () {
+        /opt/tools/Exegol-history/bin/python3 /opt/tools/Exegol-history/bin/exegol-history "$@" && exec zsh
+}
+
 function ke  {
-  ticket=$( find . -type f -regextype posix-extended -regex '.*\.(ccache|kirbi|ticket)$' -printf "%f\n" | fzf --query="$1" --height 10% --border=sharp )
+  ticket=$( find . -type f -regextype posix-extended -regex '.*\.(ccache|kirbi|ticket)$' -printf "$(pwd)/%f\n" | fzf --query="$1" --height 10% --border=sharp )
   export KRB5CCNAME="$ticket"
 }
 
@@ -32,30 +32,32 @@ function ntlm_hash {
 }
 
 function ac {
-  if [[ -z $DOMAIN ]]; then
-    exh add creds -u "$1" -p "$2" -H `ntlm_hash "$2"` -d "$3"
-  else
+  if [[ -n $DOMAIN && -z "$3" ]]; then
     exh add creds -u "$1" -p "$2" -H `ntlm_hash "$2"` -d "$DOMAIN"
+  else
+    exh add creds -u "$1" -p "$2" -H `ntlm_hash "$2"` -d "$3"
   fi
 }
 
-function apply_creds {
-  BUFFER="exh apply creds"
+function set_creds {
+  BUFFER="exh set creds"
   zle accept-line
 }
 
-function apply_hosts {
-  BUFFER="exh apply hosts"
+function set_hosts {
+  BUFFER="exh set hosts"
   zle accept-line
 }
 
-zle -N apply_creds apply_creds
-zle -N apply_hosts apply_hosts
+zle -N set_creds set_creds
+zle -N set_hosts set_hosts
 
 
-bindkey -r "^h"
-bindkey "^h" apply_hosts
-bindkey "^n" apply_creds
+bindkey -r "^u"
+bindkey -r "^y"
+
+bindkey "^u" set_creds
+bindkey "^y" set_hosts
 bindkey "^b" backward-word
 bindkey "^f" forward-word
 bindkey "^x" delete-char
@@ -63,5 +65,6 @@ bindkey "^d" delete-word
 
 
 export EDITOR=$(which nvim)
+eval "$(ip --brief -4 a | grep -v DOWN | cut -d / -f1 | awk '{printf "export %s=%s ",$1,$3}')"
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"

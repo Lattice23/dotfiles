@@ -8,18 +8,16 @@ alias l='eza -lh --icons=auto' \
       pxc='proxychains' \
       nmap2md='/opt/my-resources/bin/nmap2md/nmap2md.py' \
       ipa='ip --brief -4 a' \
-      tgt='source $(which tgt.sh)' \
       yz='yazi' \
       nv='nvim' \
       tmux='tmux -f /opt/my-resources/setup/tmux/.tmux.conf' \
-      fd='fdfind' \
       tx='tmux' \
       cheats='cd /root/.local/share/pipx/venvs/arsenal-cli/lib/python3.11/site-packages/arsenal/data/cheats/' \
       kl='klist' \
       zel='zellij' \
-      btk="base2kirbi"\
-      xac="exh apply creds" \
-      xah="exh apply hosts" \
-      zrf='zellij run --floating --'
+      xac="exh set creds" \
+      xah="exh set hosts" \
+      zrf='zellij run --floating --' \
+      b2k='base2kirbi'
       #'cd'='z'
 

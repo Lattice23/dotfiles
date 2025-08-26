@@ -1,5 +1,5 @@
 # Config file dedicated to the user's personal history shared between all exegol containers
-xcreds add hosts --ip "$TARGET" -n "DC.$DOMAIN" --role DC
+exh add hosts --ip "$TARGET" -n "DC.$DOMAIN" --role DC
 xac && xah
 nxc smb "$TARGET" --generate-krb5 /etc/krb5.conf
 nxc smb "$TARGET" --generate-hosts-file /etc/hosts
@@ -10,7 +10,9 @@ smbng -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --host "$DB_HOSTNAME" -k --kdcHost 
 mount -t nfs "$TARGET":"$SHARE" "$DIR"
 cp /opt/resources/windows/SharpCollection/NetFramework_4.0_x64/
 kpasswd "$TARGET_USER"
+bash /opt/my-resources/setup/load_user_setup.sh
 evil-winrm -i "$DB_HOSTNAME" -r "$DOMAIN"
 certipy find -u "$USER"@"$DOMAIN" -p "$PASSWORD" -dc-ip "$TARGET" -k -ns "$TARGET" -target "$DB_HOSTNAME" -vulnerable -stdout
 certipy auth -pfx administrator.pfx -dc "$TARGET"
 nxc smb $TARGET -u $USER -p $PASSWORD -d $DOMAIN --spider $SHARE --pattern . 
+godap $TARGET -u $USER -p $PASSWORD -d $DOMAIN -S -I

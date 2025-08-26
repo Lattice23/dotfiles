@@ -88,4 +88,3 @@ source "$GOPATH"/pkg/mod/github.com/tomnomnom/gf@*/gf-completion.zsh
 # genusernames function
 source /opt/tools/genusernames/genusernames.function
 
-#eval "$(starship init zsh)"
