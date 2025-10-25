@@ -25,7 +25,25 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 --
 -- Transparent()
 
--- vim.api.nvim_command("set formatoptions+=a") -- auto paragraph formatting
+-- Create an autocommand group for toggling relative numbers
+vim.api.nvim_create_augroup("cmd_line_relnum_toggle", { clear = true })
+
+-- Disable relative numbers when entering command line mode
+vim.api.nvim_create_autocmd("CmdlineEnter", {
+  group = "cmd_line_relnum_toggle",
+  callback = function()
+    vim.wo.relativenumber = false
+    vim.cmd [[ redraw ]]
+  end,
+})
+
+-- Re-enable relative numbers when leaving command line mode
+vim.api.nvim_create_autocmd("CmdlineLeave", {
+  group = "cmd_line_relnum_toggle",
+  callback = function()
+    vim.wo.relativenumber = true
+  end,
+})
 
 -- diagnostics
 vim.diagnostic.config({

@@ -1,4 +1,4 @@
-simplified_ui true
+simplified_ui false
 pane_frames true
 
 layout {
@@ -7,9 +7,11 @@ layout {
         pane size=1 borderless=true {
             plugin location="file:///opt/my-resources/setup/zellij/plugins/zjstatus.wasm" {
                 format_left   "{mode}#[fg=black]{tabs}"
-                format_center "{session}"
-                format_right  "#[fg=#6867AF,bold] {command_target} | {command_tun0ip} | {datetime}#[fg=cyan]↖ "
-                format_space  "#[fg=yellow] "
+                format_center "#[fg=cyan]  {session}" 
+                format_right  "{pipe_zjstatus_hints} #[fg=#6867AF,bold] {command_target} | {command_tun0ip} | {datetime}#[fg=cyan]↖"
+                format_space  "#[fg=yellow]"
+
+                pipe_zjstatus_hints_format "{output}"
 
                 // {session}
                 hide_frame_for_single_pane "false"

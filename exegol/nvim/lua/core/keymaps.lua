@@ -5,8 +5,9 @@ local keymap = vim.keymap
 -- clear search highlights
 keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 
--- delete single character without copying into register
+-- delete without copying into register
 keymap.set("n", "x", '"_x')
+keymap.set("n", "c", '"_c')
 
 -- increment/decrement numbers
 keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" }) -- increment
@@ -37,13 +38,23 @@ keymap.set("v", "<M-j>", ":m '>+1<CR>gv=gv", { silent = true })
 keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { silent = true })
 keymap.set("v", "<M-k>", ":m '<-2<CR>gv=gv", { silent = true })
 
--- buffers
-keymap.set("n", "<TAB>", ":bn<CR>")
-keymap.set("n", "<S-TAB>", ":bp<CR>")
+-- Normal mode
+keymap.set('n', '<A-k>', ':m .-2<CR>==', { noremap = true, silent = true })
+keymap.set('n', '<A-j>', ':m .+1<CR>==', { noremap = true, silent = true })
 
+-- Insert mode
+keymap.set('i', '<A-k>', '<Esc>:m .-2<CR>==gi', { noremap = true, silent = true })
+keymap.set('i', '<A-j>', '<Esc>:m .+1<CR>==gi', { noremap = true, silent = true })
+
+
+
+-- buffers
+keymap.set('n', '<leader>bb', ':enew<CR>', { desc = 'Create new buffer', silent = true })
 keymap.set("n", "<leader>bx", ":bdelete<CR>", { desc = "Close current buffer", silent = true })
 keymap.set("n", "<leader>bp", ":bprevious<CR>", { desc = "Previous buffer", silent = true })
 keymap.set("n", "<leader>bn", ":bnext<CR>", { desc = "Next buffer", silent = true })
+keymap.set('n', '<Tab>', ':bnext<CR>')
+
 
 keymap.set("n", "H", ":bprevious<CR>", { desc = "Previous buffer", silent = true })
 keymap.set("n", "L", ":bnext<CR>", { desc = "Next buffer", silent = true })

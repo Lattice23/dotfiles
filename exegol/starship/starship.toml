@@ -19,7 +19,7 @@ format = "[ $output](bold red) "
 disabled = false
 when = "test $DOMAIN != '' -a $USER != ''"
 command = 'echo $USER@$DOMAIN'
-format = "\\[[$output](bold green)\\] "
+format = "\\[[$output](bold yellow)\\] "
 
 # Replace the '❯' symbol in the prompt with '➜'
 [character]

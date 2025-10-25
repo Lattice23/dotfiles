@@ -3,8 +3,15 @@ exegol-history () {
         /opt/tools/Exegol-history/bin/python3 /opt/tools/Exegol-history/bin/exegol-history "$@" && exec zsh
 }
 
+HISTORY_IGNORE='(exit|cd|ls|bg|fg|history|fd|vim|nvim|ez|l|la|ll|zel|za|a|aliasr|ke|cmk|set_hosts|set_creds)'
+
 function ke  {
-  ticket=$( find . -type f -regextype posix-extended -regex '.*\.(ccache|kirbi|ticket)$' -printf "$(pwd)/%f\n" | fzf --query="$1" --height 10% --border=sharp )
+  ticket=$( find . \
+            -type f  \
+            -regextype posix-extended \
+            -regex '.*\.(ccache|kirbi|ticket)$' \
+            -printf "$(pwd)/%P\n" | fzf --query="$1" --height 10% --border=sharp 
+          )
   export KRB5CCNAME="$ticket"
 }
 
@@ -12,20 +19,71 @@ function cmk {
   mkdir -p "$1" && cd "$1"
 }
 
+function seasons {
+
+cat << EOF | tee seasons.txt
+Winter$1!
+Spring$1!
+Summer$1!
+Fall$1!
+Autumn$1!
+winter$1!
+spring$1!
+summer$1!
+fall$1!
+autumn$1!
+WINTER$1!
+SPRING$1!
+SUMMER$1!
+FALL$1!
+AUTUMN$1!
+EOF
+}
+
 function base2kirbi {
-  tmpfile=$(mktemp)
-  decodedTicket=$(mktemp)
+  local tmpfile=$(mktemp)
+  local decodedTicket=$(mktemp)
+  local ticketName="rubeus.ccache"
+
   $EDITOR "$tmpfile"
   base64 -d "$tmpfile" > "$decodedTicket"
 
-  ticketConverter.py "$decodedTicket" ticket.kirbi
+  ticketConverter.py "$decodedTicket" "$ticketName"
 
-  describeTicket.py ticket.kirbi
+  describeTicket.py "$ticketName"
+  export KRB5CCNAME=$(pwd)/"$ticketName"
+  echo "[+] Imported $ticketName"
 }
 
 function rmtickets {
-    find . -type f -regextype posix-extended -regex '.*\.(ccache|kirbi|ticket)$' -delete
+    find . \
+         -type f \
+         -regextype posix-extended  \
+         -regex '.*\.(ccache|kirbi|ticket)$' \
+         -delete
 }
+
+function za {
+  
+ export SESSION=$( zel ls --no-formatting \
+          | awk -F '[' '{printf "%s\n", $1}'   \
+          | tr -d " "  \
+          | fzf --query="$1" --height 10% --border=sharp \
+          )
+
+ zellij attach $SESSION
+}
+
+autoload -Uz add-zsh-hook
+preexec_pipe_message_to_zjswitcher() {
+    [[ -n "$ZELLIJ" ]] && zellij pipe --name Event::CommandUpdate -- $1
+}
+add-zsh-hook preexec preexec_pipe_message_to_zjswitcher
+
+precmd_pipe_message_to_zjswitcher() {
+    [[ -n "$ZELLIJ" ]] && zellij pipe --name Event::CommandUpdate -- $SHELL
+}
+add-zsh-hook precmd precmd_pipe_message_to_zjswitcher
 
 
 function clean {
@@ -33,25 +91,36 @@ function clean {
 
   sed -i "s/'.*/''/" "$profile"
   unset $(awk '/=''/ {printf "%s ",$2}' "$profile" | tr -d "=''")
+  unset KRB5CCNAME
   echo "[+] Vars cleaned"
+  exec zsh
 }
 
-function ntlm_hash { 
+function nt_hash { 
   iconv -f ASCII -t UTF-16LE <(printf "$1") | openssl dgst -md4 | awk '{print $2}'
 }
 
 function ac {
   if [[ -n $DOMAIN && -z "$3" ]]; then
-    exh add creds -u "$1" -p "$2" -H `ntlm_hash "$2"` -d "$DOMAIN"
+    exh add creds -u "$1" -p "$2" -H `nt_hash "$2"` -d "$DOMAIN"
   else
-    exh add creds -u "$1" -p "$2" -H `ntlm_hash "$2"` -d "$3"
+    exh add creds -u "$1" -p "$2" -H `nt_hash "$2"` -d "$3"
   fi
+}
+
+function save_hosts {
+  HOSTS_FILE="/opt/my-resources/hosts-$HOSTNAME.txt"
+  if [[ ! -f $HOSTS_FILE ]]; then
+    touch $HOSTS_FILE
+    cp /etc/hosts $HOSTS_FILE
+  fi
+
+    cp $HOSTS_FILE /etc/hosts
 }
 
 function set_creds {
   BUFFER="exh set creds"
-  zle accept-line
-}
+  zle accept-line }
 
 function set_hosts {
   BUFFER="exh set hosts"
@@ -60,13 +129,14 @@ function set_hosts {
 
 zle -N set_creds set_creds
 zle -N set_hosts set_hosts
+zle -N use_arsenal use_arsenal 
 
 
 bindkey -r "^u"
 bindkey -r "^y"
-
 bindkey "^u" set_creds
 bindkey "^y" set_hosts
+
 bindkey "^b" backward-word
 bindkey "^f" forward-word
 bindkey "^x" delete-char
@@ -74,6 +144,9 @@ bindkey "^d" delete-word
 
 
 export EDITOR=$(which nvim)
-eval "$(ip --brief -4 a | grep -v DOWN | cut -d / -f1 | awk '{printf "export %s=%s ",$1,$3}')"
+eval "$(ip --brief -4 a | grep -v DOWN | cut -d / -f1 | awk '! /-/ {printf "export %s=%s ;",$1,$3}')"
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
+
+save_hosts
+

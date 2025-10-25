@@ -12,7 +12,7 @@ return {
     lazy = false, -- As https://github.com/nvimdev/dashboard-nvim/pull/450, dashboard-nvim shouldn't be lazy-loaded to properly handle stdin.
     opts = function()
       local ascii = require("ascii")
-      local logo = table.concat(ascii.art.misc.hydra.hydra, "\n")
+      local logo = table.concat(ascii.art.text.neovim.def_leppard, "\n")
 
       logo = string.rep("\n", 8) .. logo .. "\n\n"
 

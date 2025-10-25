@@ -226,10 +226,12 @@ install_extras() {
     # Install Python tools via uv
     log_info "${BLUE}Installing Python security tools${NC}"
     local tools=(
-        "git+https://github.com/aniqfakhrul/powerview.py"
-        "git+https://github.com/Pennyw0rth/NetExec"
-        "git+https://github.com/brightio/penelope"
-        "git+https://github.com/ThePorgs/Exegol-history"
+        "https://github.com/p0dalirius/smbclient-ng"
+        "https://github.com/adityatelange/evil-winrm-py[kerberos]"
+        "https://github.com/aniqfakhrul/powerview.py"
+        "https://github.com/Pennyw0rth/NetExec"
+        "https://github.com/brightio/penelope"
+        "https://github.com/ThePorgs/Exegol-history"
     )
     
     for tool in "${tools[@]}"; do
@@ -237,7 +239,7 @@ install_extras() {
         log_info "Installing ${YELLOW}$tool_name${NC}"
         
         # Try to install with error handling
-        if uv tool install "$tool" --force 2>/dev/null; then
+        if uv tool install "git+$tool" --force 2>/dev/null; then
             log_success "$tool_name installed"
         else
             log_warning "$tool_name installation failed, continuing..."
@@ -255,6 +257,7 @@ install_extras() {
         local base_url="https://raw.githubusercontent.com/ThePorgs/Exegol-history/refs/heads/main"
         curl -s "$base_url/profile.sh" -o /opt/tools/Exegol-history/profile.sh
         
+        rm /root/.exegol_history/[dD]*
         mkdir -p /root/.exegol_history
         curl -s "$base_url/exegol_history/config/config.toml" -o /root/.exegol_history/config.toml
         
@@ -262,6 +265,7 @@ install_extras() {
     else
         log_warning "Exegol-history not found in uv tools, skipping setup"
     fi
+
 }
 
 # Main execution

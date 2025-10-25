@@ -20,6 +20,7 @@ function load_zsh_plugins {
 }
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/cuda/bin:/opt/cuda/nsight_compute:/opt/cuda/nsight_systems/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/lattice/.local/bin:/home/lattice/.cargo/bin/
 export XDG_CONFIG_HOME=~/.config/
+HISTORY_IGNORE='(exit|cd|ls|bg|fg|history|vim|nvim|ez|l|la|ll|zel|za)'
 
 # Function to handle initialization errors
 function handle_init_error {
@@ -48,7 +49,7 @@ function no_such_file_or_directory_handler {
     # Load plugins
     load_zsh_plugins
 
-    # Helpful aliases
+###### Custom aliases ######
     if [[ -x "$(which eza)" ]]; then
 	    alias l='eza -lh --icons=auto' \
 	          ls='eza --icons=auto' \
@@ -73,33 +74,65 @@ function no_such_file_or_directory_handler {
             zrf='zellij run --floating --'\
             sko='sudo killall openvpn' \
             wclip='wl-copy' \
-            wpaste='wl-paste'
+            wpaste='wl-paste' \
+            ez='exec zsh' \
+            update='sudo pacman -Syu'
     fi
 
+    function cmk {
+        mkdir -p "$1" && cd "$1"
+    }
+#######################
+
+
+#####  ZELLIJ  #####
+function za {
+  #fzf --query="$1" --height 10% --border=sharp \
+ export SESSION=$( 
+            zel ls --no-formatting \
+          | awk -F '[' '{printf "%s\n", $1}'   \
+          | tr -d " "  \
+          | gum filter --placeholder "Attach to a zellij session"
+         )
+
+ zellij attach $SESSION
+}
+
+autoload -Uz add-zsh-hook
+preexec_pipe_message_to_zjswitcher() {
+    [[ -n "$ZELLIJ" ]] && zellij pipe --name Event::CommandUpdate -- $1
+}
+add-zsh-hook preexec preexec_pipe_message_to_zjswitcher
+
+precmd_pipe_message_to_zjswitcher() {
+    [[ -n "$ZELLIJ" ]] && zellij pipe --name Event::CommandUpdate -- $SHELL
+}
+add-zsh-hook precmd precmd_pipe_message_to_zjswitcher
+############
+
+
+##### Yazi stuff ######
+  function y() {
+  	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+  	yazi "$@" --cwd-file="$tmp"
+  	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+  		builtin cd -- "$cwd"
+  	fi
+  	rm -f -- "$tmp"
+  }
+########
+
+
+
+
+
+######  FZF  ######
 fzf-history-widget() {
     local selected_cmd
     selected_cmd=$(history -r 1 | awk '{$1=""; print substr($0,2)}' | fzf --height=60% --border) 
     if [[ -n $selected_cmd ]]; then
         BUFFER="$selected_cmd"  # Insert the command
         zle reset-prompt        # Refresh the prompt to show the inserted command
-    fi
-}
-
-_fuzzy_edit_search_file_content() {
-    # [f]uzzy [e]dit  [s]earch [f]ile [c]ontent
-    local selected_file
-    selected_file=$(rg -irl "${1:-}" ./ | fzf --height "80%" --layout=reverse --preview-window right:60% --cycle --preview 'cat {}' --preview-window right:60%)
-
-    if [[ -n "$selected_file" ]]; then
-        if command -v nvim &>/dev/null; then
-            nvim "$selected_file"
-        else
-            echo "EDITOR is not specified. using vim.  (you can export EDITOR in ~/.zshrc)"
-            nvim "$selected_file"
-        fi
-
-    else
-        echo "No file selected or search returned no results."
     fi
 }
 
@@ -128,13 +161,14 @@ _fuzzy_edit_search_file() {
         return 1
     fi
 }
+###########
 
+
+
+
+#### keybinds ######
 zle -N fzf-history-widget
 zle -N _fuzzy_edit_search_file
-zle -N _fuzzy_edit_search_file_content
-
-
-# keybinds
 bindkey -r '^x'
 bindkey "^b" backward-word
 bindkey "^f" forward-word
@@ -143,25 +177,16 @@ bindkey "^d" delete-word
 
 bindkey '^R' fzf-history-widget
 bindkey '^t' _fuzzy_edit_search_file
-bindkey '^s' _fuzzy_edit_search_file_content
+###################
 
-# Now reassign Ctrl+X to delete one character before the cursor
-bindkey "^X" backward-delete-char
-# Yazi stuff
-  function y() {
-  	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-  	yazi "$@" --cwd-file="$tmp"
-  	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-  		builtin cd -- "$cwd"
-  	fi
-  	rm -f -- "$tmp"
-  }
 
+
+export EDITOR=$(which nvim)
+eval "$(ip --brief -4 a | grep -v DOWN | cut -d / -f1 | sed -e 's/-/_/g' | awk '{printf "export %s=%s; ",$1,$3}')"
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 #ff -c /usr/share/fastfetch/presets/neofetch.jsonc
 
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
-
 

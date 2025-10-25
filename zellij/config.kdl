@@ -21,6 +21,7 @@ keybinds clear-defaults=true {
         bind "k" { MoveFocus "up"; }
         bind "l" { MoveFocus "right"; }
         bind "n" { NewPane; SwitchToMode "normal"; }
+        bind "s" { NewPane "stacked"; SwitchToMode "Normal"; }
         bind "p" { SwitchFocus; }
         bind "Ctrl p" { SwitchToMode "normal"; }
         bind "v" { NewPane "right"; SwitchToMode "normal"; }
@@ -71,7 +72,7 @@ keybinds clear-defaults=true {
         bind "j" { Resize "Increase down"; }
         bind "k" { Resize "Increase up"; }
         bind "l" { Resize "Increase right"; }
-        bind "Ctrl n" { SwitchToMode "normal"; }
+        bind "Alt n" { SwitchToMode "normal"; }
     }
     move {
         bind "left" { MovePane "left"; }
@@ -79,7 +80,7 @@ keybinds clear-defaults=true {
         bind "up" { MovePane "up"; }
         bind "right" { MovePane "right"; }
         bind "h" { MovePane "left"; }
-        bind "Ctrl h" { SwitchToMode "normal"; }
+        bind "Ctrl m" { SwitchToMode "normal"; }
         bind "j" { MovePane "down"; }
         bind "k" { MovePane "up"; }
         bind "l" { MovePane "right"; }
@@ -98,12 +99,6 @@ keybinds clear-defaults=true {
         bind "Alt k" { MoveFocus "up"; SwitchToMode "normal"; }
         bind "Alt l" { MoveFocusOrTab "right"; SwitchToMode "normal"; }
         bind "s" { SwitchToMode "entersearch"; SearchInput 0; }
-        bind "m" {
-    LaunchOrFocusPlugin "file:~/.config/zellij/plugins/monocle.wasm" {
-        floating true
-    };
-    SwitchToMode "Normal"
-}
     }
     search {
         bind "c" { SearchToggleOption "CaseSensitivity"; }
@@ -143,18 +138,25 @@ keybinds clear-defaults=true {
             SwitchToMode "normal"
         }
     }
-    shared_except "scroll" {
-        bind "Alt left" { MoveFocusOrTab "left"; }
-        bind "Alt down" { MoveFocus "down"; }
-        bind "Alt up" { MoveFocus "up"; }
-        bind "Alt right" { MoveFocusOrTab "right"; }
+    shared_except "locked" {
+        //bind "Alt left" { MoveFocusOrTab "left"; }
+        //bind "Alt down" { MoveFocus "down"; }
+        //bind "Alt up" { MoveFocus "up"; }
+        //bind "Alt right" { MoveFocusOrTab "right"; }
         bind "Alt f" { ToggleFocusFullscreen; }
-        bind "Alt h" { MoveFocusOrTab "left"; }
-        bind "Alt j" { MoveFocus "down"; }
-        bind "Alt k" { MoveFocus "up"; }
-        bind "Alt l" { MoveFocusOrTab "right"; }
+        bind "Ctrl h" { MoveFocusOrTab "left"; }
+        bind "Ctrl j" { MoveFocus "down"; }
+        bind "Ctrl k" { MoveFocus "up"; }
+        bind "Ctrl ;" { MoveFocusOrTab "right"; }
+        //bind "Alt j" { MovePane "down"; }
+        //bind "Alt k" { MovePane "up"; }
+        //bind "Alt h" { MovePane "left"; }
+        //bind "Alt l" { MovePane "right"; }
+        //bind "Alt n" { MovePane; }
+        //bind "Alt h" { MovePaneBackwards; }
+        bind "Alt x" { CloseFocus; SwitchToMode "normal"; }
     }
-    shared_except {
+    shared_except "locked" {
         bind "Alt +" { Resize "Increase"; }
         bind "Alt -" { Resize "Decrease"; }
         bind "Alt =" { Resize "Increase"; }
@@ -162,21 +164,21 @@ keybinds clear-defaults=true {
         bind "Alt ]" { NextSwapLayout; }
         bind "Ctrl g" { SwitchToMode "locked"; }
         bind "Alt i" { MoveTab "left"; }
-        bind "Alt n" { NewPane; }
+        bind "Ctrl n" { NewPane; }
         bind "Alt o" { MoveTab "right"; }
         bind "Ctrl q" { Quit; }
         bind "Alt t" { ToggleFloatingPanes; }
     }
     shared_except "locked" "move" {
-        bind "Ctrl h" { SwitchToMode "move"; }
+        bind "Ctrl m" { SwitchToMode "move"; }
     }
     shared_except "locked" "session" {
         bind "Ctrl o" { SwitchToMode "session"; }
     }
-    shared_except "locked" "scroll" "search" "tmux" {
-        bind "Ctrl b" { SwitchToMode "tmux"; }
-    }
-    shared_except "locked" "scroll" "search" {
+    //shared_except "locked" "scroll" "search" "tmux" {
+    //    bind "Ctrl b" { SwitchToMode "tmux"; }
+    //}
+    shared_except "scroll" "search" "locked" {
         bind "Ctrl s" { SwitchToMode "scroll"; }
     }
     shared_except "locked" "tab" {
@@ -186,7 +188,7 @@ keybinds clear-defaults=true {
         bind "Ctrl p" { SwitchToMode "pane"; }
     }
     shared_except "locked" "resize" {
-        bind "Ctrl n" { SwitchToMode "resize"; }
+        bind "Alt n" { SwitchToMode "resize"; }
     }
     shared_except "normal" "locked" "entersearch" {
         bind "enter" { SwitchToMode "normal"; }
@@ -194,6 +196,22 @@ keybinds clear-defaults=true {
     shared_except "normal" "locked" "entersearch" "renametab" "renamepane" {
         bind "esc" { SwitchToMode "normal"; }
     }
+    shared_except "locked" {
+    bind "Ctrl y" {
+        LaunchOrFocusPlugin "file:~/.config/zellij/plugins/room.wasm" {
+            floating true
+            ignore_case true
+            quick_jump true
+        }
+    }
+}
+    shared_except "locked" {
+      bind "Ctrl q" {
+        LaunchOrFocusPlugin "zj-quit" {
+          floating true
+        }
+    }
+  }
     shared_among "pane" "tmux" {
         bind "x" { CloseFocus; SwitchToMode "normal"; }
     }
@@ -269,8 +287,27 @@ plugins {
     status-bar location="zellij:status-bar"
     strider location="zellij:strider"
     tab-bar location="zellij:tab-bar"
+    zjstatus-hints location="file:~/.config/zellij/plugins/zjstatus-hints.wasm" {
+        max_length 0 // 0 = unlimited
+        overflow_str "..." // default
+        pipe_name "zjstatus_hints" // default
+        hide_in_base_mode true // default
+    }
+    zj-quit location="file:///home/lattice/.config/zellij/plugins/zj-quit.wasm" {
+      confirm_key "Enter"
+      cancel_key "Esc"
+  }
+    zjwitcher location="file:///home/lattice/.config/zellij/plugins/zjswitcher.wasm"     
+    zjstatus location="file:///home/lattice/.config/zellij/plugins/zjstatus.wasm"
     welcome-screen location="zellij:session-manager" {
         welcome_screen true
+    }
+}
+
+
+ui {
+    pane_frames {
+        rounded_corners true
     }
 }
 
@@ -278,7 +315,12 @@ plugins {
 // eg. "file:/path/to/my-plugin.wasm"
 // eg. "https://example.com/my-plugin.wasm"
 load_plugins {
-  "file:/home/lattice/.config/zellij/plugins/theme-tester.wasm"
+    "file:///home/lattice/.config/zellij/plugins/zjswitcher.wasm" {
+        programs_in_locked_mode "vim, nvim"
+    }
+    zj-quit
+    zjstatus
+    zjstatus-hints
 }
  
 // Use a simplified UI without special fonts (arrow glyphs)
@@ -291,7 +333,7 @@ simplified_ui false
 // Choose the theme that is specified in the themes section.
 // Default: default
 // 
-theme "blade-runner"
+theme "catppuccin-mocha"
  
 // Choose the base input mode of zellij.
 // Default: normal
@@ -336,7 +378,7 @@ layout_dir "/home/lattice/.config/zellij/layouts"
 //   - true (default, enabled)
 //   - false
 // 
-// pane_frames false
+//pane_frames false
  
 // When attaching to an existing session with other users,
 // should the session be mirrored (true)
@@ -392,7 +434,7 @@ copy_on_select true
  
 // Path to the default editor to use to edit pane scrollbuffer
 // Default: $EDITOR or $VISUAL
-scrollback_editor "/usr/bin/nvim"
+// scrollback_editor "/usr/bin/vim"
  
 // A fixed name to always give the Zellij session.
 // Consider also setting `attach_to_session true,`
@@ -435,7 +477,7 @@ scrollback_editor "/usr/bin/nvim"
 // scrollback_lines_to_serialize 10000
  
 // Editor to chose while in scroll mode
-scrollback_editor "/usr/bin/nvim";
+scrollback_editor "/bin/nvim";
 
 // Enable or disable the rendering of styled and colored underlines (undercurl).
 // May need to be disabled for certain unsupported terminals
@@ -459,7 +501,7 @@ scrollback_editor "/usr/bin/nvim";
 // (Requires restart)
 // Default: true (if the host terminal supports it)
 // 
-support_kitty_keyboard_protocol false
+// support_kitty_keyboard_protocol false
  
 // Whether to stack panes when resizing beyond a certain size
 // Default: true

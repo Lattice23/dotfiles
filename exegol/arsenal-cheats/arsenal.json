@@ -5,7 +5,7 @@
   "user": "$USER",
   "password": "$PASSWORD",
   "hash":"$NT_HASH",
-  "nt-hash":"$NT_HASH",
+  "nt_hash":"$NT_HASH",
   "ip":"$TARGET",
   "dc-ip":"$TARGET"
 }

@@ -10,9 +10,11 @@ smbng -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --host "$DB_HOSTNAME" -k --kdcHost 
 mount -t nfs "$TARGET":"$SHARE" "$DIR"
 cp /opt/resources/windows/SharpCollection/NetFramework_4.0_x64/
 kpasswd "$TARGET_USER"
+/opt/my-resources/setup/load_user_setup.sh
 bash /opt/my-resources/setup/load_user_setup.sh
 evil-winrm -i "$DB_HOSTNAME" -r "$DOMAIN"
 certipy find -u "$USER"@"$DOMAIN" -p "$PASSWORD" -dc-ip "$TARGET" -k -ns "$TARGET" -target "$DB_HOSTNAME" -vulnerable -stdout
 certipy auth -pfx administrator.pfx -dc "$TARGET"
 nxc smb $TARGET -u $USER -p $PASSWORD -d $DOMAIN --spider $SHARE --pattern . 
 godap $TARGET -u $USER -p $PASSWORD -d $DOMAIN -S -I
+cmk scan; nmap -A -v $TARGET -oX scan.xml -oN scan.nmap

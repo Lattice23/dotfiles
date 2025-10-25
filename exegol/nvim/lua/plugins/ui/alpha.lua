@@ -55,7 +55,6 @@ return {
             { action = function() find_file_and_cd("~") end, desc = " Find File", icon = " ", key = "f" },
             { action = "ene | startinsert", desc = " New File", icon = " ", key = "n" },
             { action = "Telescope oldfiles", desc = " Recent Files", icon = " ", key = "r" },
-            { action = function() find_file_and_cd("~/Vault/Vault/") end, desc = "Obsidian Vault", icon = "󱟻  ", key = "v" },
             { action = "Telescope live_grep", desc = " Find Text", icon = " ", key = "g" },
             { action = 'lua require("telescope.builtin").find_files({ cwd = vim.fn.expand("~/.config/nvim") })', desc = " Config", icon = " ", key = "c" },
             { action = 'lua require("persistence").load()', desc = " Restore Session", icon = " ", key = "s" },
