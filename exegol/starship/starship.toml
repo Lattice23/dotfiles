@@ -2,12 +2,16 @@
 #"$schema" = 'https://starship.rs/config-schema.json'
 
 format = """$directory${custom.DOMAIN_USER}
-${custom.HOST}$character
+${python}${custom.HOST}$character
 """
-
 
 # Inserts a blank line between shell prompts
 add_newline = true
+
+[python]
+format = '[${symbol}(\($virtualenv\) )]($style)'
+symbol = "🐍 "
+style = "bold #f3e10b"
 
 [custom.HOST]
 disabled = false

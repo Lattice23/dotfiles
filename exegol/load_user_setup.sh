@@ -87,7 +87,7 @@ install_starship() {
 
     mkdir -p /root/.config
     cp "$SETUP_DIR/starship/starship.toml" /root/.config/ 2>/dev/null || log_warning "Starship config not found"
-    cp "$SETUP_DIR/zsh/zsh.bak" /root/.zshrc 2>/dev/null || log_warning "Zsh config not found"
+    sed -i '/precmd update_prompt/d' ~/.zshrc
     log_success "${PURPLE}Starship${NC} and ${YELLOW}Eza${NC} configuration applied"
 }
 

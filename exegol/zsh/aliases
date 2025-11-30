@@ -18,7 +18,7 @@ alias l='eza -lh --icons=auto' \
       xac="exh set creds" \
       xah="exh set hosts" \
       zrf='zellij run --floating --' \
-      b2k='base2kirbi' \
+      b2c='base2ccache' \
       ez='exec zsh' \
       a='aliasr'
       #'cd'='z'

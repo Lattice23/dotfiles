@@ -13,7 +13,7 @@ bloodyAD --host <dc_fqdn> -u <user> <auth> -d <domain>  add groupMember "<target
 
 ## bloodyAD - set user spn
 ```
-bloodyAD --host <dc_fqdn> -d <domain> -u <user> <auth>  set object "<target_user>" servicePrincipalName -v "<service>/<target-host|$DB_HOSTNAME>"
+bloodyAD --host <dc_fqdn> -d <domain> -u <user> <auth>  set object "<target_user>" servicePrincipalName -v "<service>/<target-host|$DC_HOST>"
 ```
 
 ## bloodyAD - set user attribute

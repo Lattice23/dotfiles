@@ -2,18 +2,18 @@
 exh add hosts --ip "$TARGET" -n "DC.$DOMAIN" --role DC
 xac && xah
 nxc smb "$TARGET" --generate-krb5 /etc/krb5.conf
-nxc smb "$TARGET" --generate-hosts-file /etc/hosts
+nxc smb "$TARGET" --generate-hosts-file $HOSTS_FILE
 bat /etc/{hosts,krb5.conf}
-powerview "$DOMAIN"/"$USER":"$PASSWORD"@"$DB_HOSTNAME" -k
+powerview "$DOMAIN"/"$USER":"$PASSWORD"@"$DC_HOST" -k
 unset KRB5CCNAME
-smbng -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --host "$DB_HOSTNAME" -k --kdcHost "$DB_HOSTNAME"
+smbng -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --host "$DC_HOST" -k --kdcHost "$DB_HOSTNAME"
 mount -t nfs "$TARGET":"$SHARE" "$DIR"
 cp /opt/resources/windows/SharpCollection/NetFramework_4.0_x64/
 kpasswd "$TARGET_USER"
 /opt/my-resources/setup/load_user_setup.sh
 bash /opt/my-resources/setup/load_user_setup.sh
 evil-winrm -i "$DB_HOSTNAME" -r "$DOMAIN"
-certipy find -u "$USER"@"$DOMAIN" -p "$PASSWORD" -dc-ip "$TARGET" -k -ns "$TARGET" -target "$DB_HOSTNAME" -vulnerable -stdout
+certipy find -u "$USER"@"$DOMAIN" -p "$PASSWORD" -dc-ip "$TARGET" -k -ns "$TARGET" -target "$DC_HOST" -vulnerable -stdout
 certipy auth -pfx administrator.pfx -dc "$TARGET"
 nxc smb $TARGET -u $USER -p $PASSWORD -d $DOMAIN --spider $SHARE --pattern . 
 godap $TARGET -u $USER -p $PASSWORD -d $DOMAIN -S -I
