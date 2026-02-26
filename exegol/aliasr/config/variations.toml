@@ -1,0 +1,94 @@
+# Universal
+[_.impacket_auth]
+Password = ":<password>"
+"NT hash" = " -hashes <nt_hash>"
+Kerberos = " -k -no-pass"
+
+[_.impacket_target_auth]
+Password = ":<password>@<fqdn>"
+"NT hash" = "@<fqdn> -hashes <nt_hash>"
+Kerberos = "@<fqdn> -k -no-pass"
+
+# Non-universal
+
+## Auth
+[bloodyAD.auth]
+Password = "-p <password>"
+"NT hash" = "-p :<nt_hash>"
+Kerberos = "-k"
+
+[bloodyAD.action]
+"Get writable" = "get writable"
+"Get dnsDump" = "get dnsDump"
+"Get trusts" = "get trusts"
+
+[nxc.auth]
+Password = "-p <password>"
+"Password + Kerberos" = "-p <password> -k"
+"NT hash" = "-H <nt_hash>"
+"NT hash + Kerberos" = "-H <nt_hash> -k"
+Kerberos = "--use-kcache"
+
+[nxc.smb_modules]
+"Backup operators" = "-M backup_operator"
+"Change password (multi-protocol)" = "-M change-password -o NEWPASS='<new_password|Password123!>'"
+
+[certipy.auth]
+Password = "-p <password>"
+"NT hash" = "-hashes <nt_hash>"
+Kerberos = "-k"
+
+["bloodhound.py".auth]
+Password = "-p <password>"
+"NT hash" = "--hashes :<nt_hash>"
+Kerberos = "-k -no-pass"
+
+["printerbug.py".auth]
+"Password (NTLM)" = ":<password>@<ip>"
+"NT hash (NTLM)" = "@<ip> -hashes <nt_hash>"
+"Kerberos (NTLM)" = "@<ip> -k -no-pass"
+"Password (Kerberos)" = ":<password>@<fqdn>"
+"NT hash (Kerberos)" = "@<fqdn> -hashes <nt_hash>"
+"Kerberos (Kerberos)" = "@<fqdn> -k -no-pass"
+
+[powerview.auth]
+"Password" = ":<password>@<fqdn>"
+"NT hash" = "@<fqdn> -H <nt_hash>"
+"Kerberos" = "@<fqdn> -k --no-pass"
+
+[godap.auth]
+Password = "-p<password>"
+"NT hash" = "-H <nt_hash>"
+Kerberos = "-k"
+
+[lsassy.auth]
+Password = "-p <password>"
+"NT hash" = "-H <nt_hash>"
+Kerberos = "-k"
+
+["targetedKerberoast.py".auth]
+Password = "-p <password>"
+"NT hash" = "-H <nt_hash>"
+Kerberos = "-k --no-pass"
+
+[smbclientng.auth]
+Password = "-p <password>"
+"NT hash" = "--hashes <nt_hash>"
+Kerberos = "-k --no-pass"
+
+[ewp.auth]
+Password = "-u <user> -p <password>"
+"NT hash" = "-u '<user>' -H <nt_hash>"
+Kerberos = "-k"
+Certificate = "-u '<user>' --priv-key-pem <key_pem> --cert-pem <cert_pem>"
+
+[evil-winrm.auth]
+Password = "-u <user> -p <password>"
+"NT hash" = "-u '<user>' -H <nt_hash>"
+Kerberos = "-r <domain>"
+
+## Other
+[nxc.mssql_query]
+"Database names" = "SELECT name FROM master.dbo.sysdatabases"
+"Table names" = "SELECT table_name FROM <database>.INFORMATION_SCHEMA.TABLES"
+"Dump table" = "SELECT * FROM [<database>].[dbo].<table>"

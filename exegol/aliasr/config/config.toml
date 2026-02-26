@@ -1,0 +1,95 @@
+# DEFAULT PACKAGE CONFIGS
+## REMOVING ANY OF THESE VALUES WILL RAISE ERRORS
+### EDIT ~/.config/aliasr/config.toml INSTEAD AND CHANGES WILL AUTOMATICALLY BE MERGED
+[cheats]
+paths = ["~/.cheats", "/opt/my-resources/setup/aliasr/"]
+exclude = ["README.md"]
+include_defaults = false
+custom_first = false
+default_grouping = "cat"  # Set to "" for none/all
+
+[globals]
+path = "~/.aliasr.json"
+history = false
+max_len = 50
+show_grid = true
+auto_krb = false
+
+[globals.defaults]
+lhost = [""]
+lport = [""]
+lwport = [""]  # Stands for "local web port" - where you like to serve your simple http server
+ip = [""]
+dc_ip = [""]
+hostname = [""]
+domain = [""]
+fqdn = [""]
+netbios = [""]
+domain_sid = [""]
+krb5ccname = [""]
+aliasr_prefix = [""]
+
+[creds]
+kdbx = "~/.exegol_history/DB.kdbx"
+key = "~/.exegol_history/db.key"
+mask = false
+auto_hash = true
+
+[keybindings]
+quit = "ctrl+c"
+copy_input = "ctrl+b"
+prev_tab = "ctrl+left"
+next_tab = "tab"
+toggle_grid = "ctrl+g"  # While focusing the search bar
+cycle_grid_focus = "ctrl+s"
+cycle_filter_focus = "ctrl+r"
+cycle_select_focus = "ctrl+y"  # Refers to dropdown boxes in top right of main screen
+globals_editor = "ctrl+g"  # While focusing the globals grid
+globals_screen = "ctrl+o"
+creds_screen = "ctrl+l"
+tree_screen = "ctrl+t"
+
+[keybindings.build_screen]
+param_screen = "ctrl+r"
+variations_screen = "ctrl+g"
+
+[keybindings.grid_nav]
+move_left = "alt+left"
+move_right = "tab"
+move_up = "alt+up"
+move_down = "alt+down"
+
+[keybindings.table]
+edit_row = "enter"
+add_row = "ctrl+n"
+delete_row = "ctrl+j"
+move_row_up = "ctrl+up"
+move_row_down = "ctrl+down"
+
+[keybindings.table.copy]
+col_1 = "ctrl+r"  # Username/Global
+col_2 = "ctrl+t"  # Password/Value
+col_3 = "ctrl+y"  # NT Hash
+col_4 = "ctrl+g"  # Domain
+
+[layout]
+globals_rows = 2
+globals_columns = 6
+build_columns = 5
+
+# See https://textual.textualize.io/guide/design/#base-colors for reference
+[theme]
+#name="dracula"
+primary   = "#BD93F9"   # Purple - used for focused inputs, highlighted options, build preview placeholders
+secondary = "#FF79C6"   # Pink - used for modal titles (param menu, globals menu, creds menu)
+accent    = "#8BE9FD"   # Cyan - used for preview text in main menu
+foreground= "#F8F8F2"   # Foreground - used for general text, borders, selected items
+background= "#282A36"   # Background - used for widget backgrounds
+success = "#98C379"      # Used for: check marks
+warning = "#BD93F9"      # Used for: cheat titles in header, marked parameters
+error = "#E06C75"        # Used for: x marks
+surface = "#282C34"      # Used for: modal backgrounds (same as background)
+panel = "#282C34"        # Used for: footer background, scrollbar color
+dark = true                # Theme mode flag
+footer_key_foreground = "#FF79C6"  # Used for: footer keybinding text
+

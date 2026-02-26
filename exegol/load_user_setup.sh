@@ -53,7 +53,8 @@ install_yazi() {
         log_info "${CYAN}Installing Yazi file manager${NC}"
         local url="https://github.com/sxyazi/yazi/releases/download/v25.5.31/yazi-x86_64-unknown-linux-musl.zip"
         
-        jar xvf <(curl -Ls "$url" --output -)
+        curl -Ls "$url" -O 
+        unzip yazi-x86_64-unknown-linux-musl.zip
         chmod +x yazi-x86_64-unknown-linux-musl/yazi
         mv yazi-x86_64-unknown-linux-musl/yazi "$BIN_DIR/"
         rm -rf yazi-x86_64-unknown-linux-musl
@@ -71,8 +72,8 @@ install_starship() {
     log_debug "Starting starship installation"
     if should_install "starship"; then
         log_info "${PURPLE}Installing Starship prompt and Eza${NC}"
-        local starship_url="https://github.com/starship/starship/releases/download/v1.23.0/starship-x86_64-unknown-linux-musl.tar.gz"
-        local eza_url="https://github.com/eza-community/eza/releases/download/v0.23.0/eza_x86_64-unknown-linux-musl.tar.gz"
+        local starship_url="https://github.com/starship/starship/releases/download/v1.24.1/starship-x86_64-unknown-linux-musl.tar.gz"
+        local eza_url="https://github.com/eza-community/eza/releases/download/v0.23.4/eza_x86_64-unknown-linux-musl.tar.gz"
 
         download_and_extract "$starship_url"
         mv starship "$BIN_DIR/"
@@ -128,25 +129,6 @@ install_zellij() {
     log_success "${BLUE}Zellij${NC} configuration applied"
 }
 
-install_nushell() {
-    log_debug "Starting nushell installation"
-    if should_install "nu"; then
-        log_info "${YELLOW}Installing Nushell${NC}"
-        local url="https://github.com/nushell/nushell/releases/download/0.106.1/nu-0.106.1-x86_64-unknown-linux-musl.tar.gz"
-        
-        download_and_extract "$url"
-        mv nu-0.106.1-x86_64-unknown-linux-musl/nu "$BIN_DIR/"
-        rm -rf nu-0.106.1-x86_64-unknown-linux-musl
-        log_success "Nushell binary installed"
-    else
-        log_warning "Nushell already exists, skipping download"
-    fi
-
-    mkdir -p /root/.config
-    cp -r "$SETUP_DIR/nushell/config.nu" /root/.config/ 2>/dev/null || log_warning "Nushell config not found"
-    log_success "${YELLOW}Nushell${NC} configuration applied"
-}
-
 install_fd_rg() {
     log_debug "Starting fd/rg installation"
     local need_install=false
@@ -159,17 +141,17 @@ install_fd_rg() {
         log_info "${WHITE}Installing fd (find) and ripgrep (rg)${NC}"
         
         # Install fd
-        local fd_url="https://github.com/sharkdp/fd/releases/download/v10.2.0/fd-v10.2.0-x86_64-unknown-linux-musl.tar.gz"
+        local fd_url="https://github.com/sharkdp/fd/releases/download/v10.3.0/fd-v10.3.0-x86_64-unknown-linux-musl.tar.gz"
         download_and_extract "$fd_url"
-        mv fd-v10.2.0-x86_64-unknown-linux-musl/fd "$BIN_DIR/"
-        rm -rf fd-v10.2.0-x86_64-unknown-linux-musl
+        mv fd-*-unknown-linux-musl/fd "$BIN_DIR/"
+        rm -rf fd-*-unknown-linux-musl
         log_success "fd binary installed"
 
         # Install ripgrep
-        local rg_url="https://github.com/BurntSushi/ripgrep/releases/download/14.1.1/ripgrep-14.1.1-x86_64-unknown-linux-musl.tar.gz"
+        local rg_url="https://github.com/BurntSushi/ripgrep/releases/download/15.1.0/ripgrep-15.1.0-x86_64-unknown-linux-musl.tar.gz"
         download_and_extract "$rg_url"
-        mv ripgrep-14.1.1-x86_64-unknown-linux-musl/rg "$BIN_DIR/"
-        rm -rf ripgrep-14.1.1-x86_64-unknown-linux-musl
+        mv ripgrep-*-x86_64-unknown-linux-musl/rg "$BIN_DIR/"
+        rm -rf ripgrep-*-x86_64-unknown-linux-musl
         log_success "ripgrep binary installed"
         
         log_success "${WHITE}fd${NC} and ${WHITE}ripgrep${NC} ready"
@@ -232,6 +214,8 @@ install_extras() {
         "https://github.com/Pennyw0rth/NetExec"
         "https://github.com/brightio/penelope"
         "https://github.com/ThePorgs/Exegol-history"
+        "https://github.com/Mojo8898/aliasr"
+        "ruff@latest"
     )
     
     for tool in "${tools[@]}"; do
@@ -284,8 +268,6 @@ main() {
     install_zellij
     echo ""
     install_zoxide
-    echo ""
-    install_nushell
     echo ""
     install_fd_rg
     echo ""

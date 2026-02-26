@@ -19,8 +19,8 @@ function load_zsh_plugins {
     # Loads om-my-zsh
     [[ -r $ZSH/oh-my-zsh.sh ]] && source $ZSH/oh-my-zsh.sh
 }
-export PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/cuda/bin:/opt/cuda/nsight_compute:/opt/cuda/nsight_systems/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/lattice/.local/bin:/home/lattice/.cargo/bin/
-export XDG_CONFIG_HOME=~/.config/
+export GOPATH=$HOME/go
+export PATH=$PATH:$HOME/.local/bin:$GOROOT/bin:$GOPATH/bin
 HISTORY_IGNORE='(exit|cd|ls|bg|fg|history|vim|nvim|ez|l|la|ll|zel|za)'
 
 # Function to handle initialization errors
@@ -77,7 +77,9 @@ function no_such_file_or_directory_handler {
             wclip='wl-copy' \
             wpaste='wl-paste' \
             ez='exec zsh' \
-            update='sudo pacman -Syu'
+            update='sudo pacman -Syu'\
+            s='kitten ssh' \
+            cat='bat -p'
     fi
 
     function cmk {
@@ -124,14 +126,13 @@ add-zsh-hook precmd precmd_pipe_message_to_zjswitcher
 ########
 
 
-
-
-
 ######  FZF  ######
-zvm_after_init() {
+
+if [[ -f ~/.fzf.zsh ]]; then
+  source ~/.fzf.zsh
+elif [[ -f /usr/share/fzf/key-bindings.zsh ]]; then
   source /usr/share/fzf/key-bindings.zsh
-  source /usr/share/fzf/completion.zsh
-}
+fi
 
 export FZF_COMPLETION_TRIGGER='::'
 export FZF_CTRL_R_OPTS="
@@ -164,24 +165,6 @@ bindkey -r '^x'
 bindkey "^b" backward-word
 bindkey "^f" forward-word
 bindkey "^x" delete-char
-#bindkey "^d" delete-word
-
-
-function zvm_config() {
-  ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
-  ZVM_VI_INSERT_ESCAPE_BINDKEY=a\;
-}
-
-source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-source ~/.zsh-vi-man/zsh-vi-man.plugin.zsh
-
-function zvm_after_init() {
-  # Default keymap
-  bindkey '^D' delete-word
-  # Vi insert/normal maps
-  bindkey -M viins '^D' delete-word
-  bindkey -M vicmd '^D' delete-word
-}
 ###################
 
 export EDITOR=$(which nvim)

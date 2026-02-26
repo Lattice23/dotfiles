@@ -1,0 +1,38 @@
+{
+    "domain": [
+        "$DOMAIN"
+    ],
+    "user": [
+        "$USER"
+    ],
+    "password": [
+        "$PASSWORD"
+    ],
+    "hash": [
+        "$NT_HASH"
+    ],
+    "ip": [
+        "$TARGET"
+    ],
+    "share": [
+        "SYSVOL"
+    ],
+    "dc_fqdn": [
+        "$DC_HOST"
+    ],
+    "target_ip": [
+        "$TARGET"
+    ],
+    "hosts_file": [
+        "$HOSTS_FILE"
+    ],
+    "krb5_file": [
+        "/etc/krb5.conf"
+    ],
+    "dc_ip": [
+        "$TARGET"
+    ],
+    "fqdn": [
+        "$DC_HOST"
+    ]
+}

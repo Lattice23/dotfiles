@@ -1,7 +1,7 @@
   
-exegol-history () {
-        /opt/tools/Exegol-history/bin/python3 /opt/tools/Exegol-history/bin/exegol-history "$@" && exec zsh
-}
+#exegol-history () {
+#        /opt/tools/Exegol-history/bin/python3 /opt/tools/Exegol-history/bin/exegol-history "$@" && exec zsh
+#}
 
 HISTORY_IGNORE='(exit|cd|ls|bg|fg|history|fd|vim|nvim|ez|l|la|ll|zel|za|a|aliasr|ke|cmk|set_hosts|set_creds)'
 
@@ -50,7 +50,7 @@ function base2ccache {
 
   ticketConverter.py "$decodedTicket" "$ticketName"
 
-  describeTicket.py "$ticketName"
+  describeTicket "$ticketName"
   export KRB5CCNAME=$(pwd)/"$ticketName"
   echo "[+] Imported $ticketName"
 }
@@ -87,36 +87,11 @@ add-zsh-hook precmd precmd_pipe_message_to_zjswitcher
 
 
 ######  FZF  ######
-zvm_after_init() {
-  source /usr/share/fzf/key-bindings.zsh
-  source /usr/share/fzf/completion.zsh
-}
-
 export FZF_COMPLETION_TRIGGER='::'
 export FZF_CTRL_R_OPTS="
   --preview 'echo {}' --preview-window up:3:hidden:wrap
   --bind 'ctrl-/:toggle-preview'
-  --bind 'ctrl-y:execute-silent(echo -n {2..} | wl-copy)+abort'
-  --color header:italic
-  --header 'Press CTRL-Y to copy command into clipboard'"
-
-_fzf_comprun() {
-  local command=$1
-  shift
-
-  case "$command" in
-    cd)           fzf "$@" --preview 'tree -C {} | head -200' ;;
-    cat|bat|nvim)
-      fzf "$@" --preview 'bat --style=numbers --color=always --line-range :500 {}' ;;
-    *)            fzf "$@" ;;
-  esac
-}
-###########
-export FZF_COMPLETION_TRIGGER='::'
-export FZF_CTRL_R_OPTS="
-  --preview 'echo {}' --preview-window up:3:hidden:wrap
-  --bind 'ctrl-/:toggle-preview'
-  --bind 'ctrl-y:execute-silent(echo -n {2..} | wl-copy)+abort'
+  --bind 'ctrl-y:execute-silent(echo -n {2..} | xclip -in -selection clipboard)+abort'
   --color header:italic
   --header 'Press CTRL-Y to copy command into clipboard'"
 
@@ -188,7 +163,6 @@ bindkey "^b" backward-word
 bindkey "^f" forward-word
 bindkey "^x" delete-char
 bindkey "^d" delete-word
-
 
 export EDITOR=$(which nvim)
 eval "$(ip --brief -4 a | grep -v DOWN | cut -d / -f1 | awk '! /-/ {printf "export %s=%s ;",$1,$3}')"
